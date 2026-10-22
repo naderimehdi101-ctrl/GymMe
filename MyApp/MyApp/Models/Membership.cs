@@ -11,5 +11,5 @@ public class Membership
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public int DurationMonths { get; set; } 
 }
