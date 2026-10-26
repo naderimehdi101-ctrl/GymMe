@@ -1,3 +1,4 @@
+using GymManagementApi.DTOs.Responses;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -10,19 +11,19 @@ public class MembershipService
         _db = db;
     }
 
-    public async Task<Membership?> CreateMembership(MembershipDto dto)
+    public async Task<MembershipResponse> CreateMembership(MembershipDto dto)
     {
         var member = await _db.Members
             .FirstOrDefaultAsync(m => m.ID == dto.MemberID);
 
         if (member is null)
-            return null;
+            throw new KeyNotFoundException($"No Member found with that ID: {dto.MemberID}!");
 
         var plan = await _db.Plans
             .FirstOrDefaultAsync(p => p.ID == dto.GymPlanID);
 
         if (plan is null)
-            return null;
+            throw new KeyNotFoundException($"No Plan found with that ID: {dto.GymPlanID}!");
 
         var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -40,6 +41,15 @@ public class MembershipService
         _db.Memberships.Add(membership);
         await _db.SaveChangesAsync();
 
-        return membership;
+        return new MembershipResponse(
+            ID: membership.ID,
+            MemberID: membership.MemberId,
+            MemberName: membership.Member.Name,
+            GymPlanID: membership.GymPlanId,
+            GymPlanName: membership.GymPlan.Name,
+            PricePaid: membership.GymPlan.Price,
+            StartDate: membership.StartDate,
+            EndDate: membership.EndDate
+        );
     }
 }

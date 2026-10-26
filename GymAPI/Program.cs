@@ -1,5 +1,9 @@
+using System;
 using FluentValidation;
+using GymManagementApi.Validators;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+
 
 
 
@@ -13,6 +17,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddScoped<GymPlanService>();
 builder.Services.AddScoped<MemberService>();
 builder.Services.AddScoped<MembershipService>();
+
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();

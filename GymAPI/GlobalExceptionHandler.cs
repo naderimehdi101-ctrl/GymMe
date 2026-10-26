@@ -15,14 +15,23 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         _logger.LogError(exception, "An unhandled exception occured: {Message}", exception.Message);
         
-        var problemDetails = new ProblemDetails()
+        var (statusCode, title ) = exception switch
         {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "Server error!",
-            Detail ="An unexpected error occurred on our gym system. Please try again later."
+            KeyNotFoundException => (StatusCodes.Status404NotFound, "Resource Not Found!"),
+            ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request"),
+            _ => (StatusCodes.Status500InternalServerError, "Server Error")
+            
         };
         
-        httpContext.Response.StatusCode = problemDetails.Status.Value;
+        var problemDetails = new ProblemDetails()
+        {
+            Status = statusCode,
+            Title = title,
+            Detail = exception.Message,
+            Instance = httpContext.Request.Path
+        };
+        
+        httpContext.Response.StatusCode = statusCode;
         
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
         
