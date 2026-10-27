@@ -42,14 +42,15 @@ public class MembershipService
         await _db.SaveChangesAsync();
 
         return new MembershipResponse(
-            ID: membership.ID,
-            MemberID: membership.MemberId,
-            MemberName: membership.Member.Name,
-            GymPlanID: membership.GymPlanId,
-            GymPlanName: membership.GymPlan.Name,
-            PricePaid: membership.GymPlan.Price,
-            StartDate: membership.StartDate,
-            EndDate: membership.EndDate
+            ID = membership.ID,
+            MemberID = membership.MemberId,
+            MemberName = membership.Member.Name,
+            GymPlanID = membership.GymPlanId,
+            GymPlanName = membership.GymPlan.Name,
+            PricePaid = membership.GymPlan.Price,
+            StartDate = membership.StartDate,
+            EndDate = membership.EndDate,
+            IsActive = membership.IsActive
         );
     }
 }

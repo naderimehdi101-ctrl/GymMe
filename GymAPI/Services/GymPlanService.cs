@@ -45,4 +45,31 @@ public class GymPlanService
             Price: newGymPlan.Price
         );
     }
+
+    public async Task<bool> UpdatePlan(int id, GymPlanDto planDto)
+    {
+        var updatePlan = await _db.Plans.FirstOrDefaultAsync(p => p.ID == id);
+        if(updatePlan is null)
+            throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
+
+        updatePlan.ID = id;
+        updatePlan.Name = planDto.Name;
+        updatePlan.Price = planDto.Price;
+
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> DeletePlan(int id)
+    {
+        var deletePlan = await _db.Plans.FirstOrDefaultAsync(p => p.ID == id);
+        if(deletePlan is null)
+            throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
+
+        await _db.Plans.RemoveAsync(deletePlan);
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
 }

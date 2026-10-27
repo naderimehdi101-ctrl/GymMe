@@ -16,6 +16,7 @@ public static class MemberEndpoint
         group.MapPut("/{id:int}", UpdateMemberHandler).AddEndpointFilter<ValidationFilter<MemberDto>>();
         group.MapGet("/{id:int}", GetMemberHandler);
         group.MapDelete("/{id:int}", DeleteMemberHandler);
+        group.MapGet("/allMembers", GetAllMembersHandler);
     }
 
     private static async Task<IResult> CreateMemberHandler(MemberDto memberDto, MemberService memberService)
@@ -40,5 +41,11 @@ public static class MemberEndpoint
     {
         await memberService.DeleteMember(id);
         return Results.Ok(new { Message = "Member successfully removed!" });
+    }
+
+    private static async Task<IResult> GetAllMembersHandler(MemberService memberService)
+    {
+        var getAllMembers = await memberService.GetAllMembers();
+        return Results.Ok(getAllMembers);
     }
 }

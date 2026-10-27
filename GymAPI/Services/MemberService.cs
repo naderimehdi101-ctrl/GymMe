@@ -13,11 +13,11 @@ public class MemberService
     public async Task<MemberResponse> CreateMember(MemberDto memberDto)
     {
         GymPlan? plan = await _db.Plans
-			.FirstOrDefaultAsync(p => p.ID == memberDto.GymPlanId);
+            .FirstOrDefaultAsync(p => p.ID == memberDto.GymPlanId);
 
         if (plan is null)
             throw new KeyNotFoundException($"No Plan Found!");
-        
+
         var newMember = new Member
         {
             Name = memberDto.Name,
@@ -29,37 +29,37 @@ public class MemberService
         _db.Members.Add(newMember);
         await _db.SaveChangesAsync();
 
-        return new MemberResponse{
+        return new MemberResponse {
             ID = newMember.ID,
             Name = newMember.Name,
             Age = newMember.Age,
             GymPlanId = newMember.GymPlanId,
             GymPlanName = plan.Name,
             GymPlanPrice = plan.Price
-            };
+        };
     }
 
     public async Task<MemberResponse> GetMember(int id)
     {
         var member = await _db.Members.Include(m => m.GymPlan).FirstOrDefaultAsync(m => m.ID == id);
-        
-        if(member is null)
+
+        if (member is null)
             throw new KeyNotFoundException($"No Member Found!");
-        
-        return new MemberResponse{
+
+        return new MemberResponse {
             ID = member.ID,
             Name = member.Name,
             Age = member.Age,
             GymPlanId = member.GymPlanId,
-            GymPlanName = member.GymPlan?.Name ?? "No plan assigned", 
+            GymPlanName = member.GymPlan?.Name ?? "No plan assigned",
             GymPlanPrice = member.GymPlan?.Price ?? 0.00m
-            };
+        };
     }
 
     public async Task<bool> UpdateMember(int id, MemberDto memberDto)
     {
         var found = await _db.Members
-			.FirstOrDefaultAsync(m => m.ID == id);
+            .FirstOrDefaultAsync(m => m.ID == id);
 
         if (found is null)
             throw new KeyNotFoundException($"No Member found with that ID: {id}!");
@@ -85,13 +85,24 @@ public class MemberService
         var found = await _db.Members
             .Include(x => x.GymPlan)
             .FirstOrDefaultAsync(m => m.ID == id);
-        
-        if(found is null)
-        throw new KeyNotFoundException($"No Member found with that ID: {id}");
+
+        if (found is null)
+            throw new KeyNotFoundException($"No Member found with that ID: {id}");
 
         _db.Members.Remove(found);
         await _db.SaveChangesAsync();
 
         return true;
     }
+
+    public async Task<List<MemberResponse>> GetAllMembers()
+    {
+        var allMembers = await _db.Members.Include(m => m.GymPlan).ToListAsync();
+        if(allMembers is null || allMembers.Count == 0)
+            throw new KeyNotFoundException($"No Members Found!");)
+
+        return allMembers;
+    }
+        
+    
 }

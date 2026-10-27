@@ -15,6 +15,8 @@ public static class GymPlanEndpoints
         var group = app.MapGroup("/gymplans").WithTags("Gym Plans");
 
         group.MapPost("/", CreatePlanHandler).AddEndpointFilter<ValidationFilter<GymPlanDto>>();
+        group.MapPut("/{id:int}", UpdatePlanHandler).AddEndpointFilter<ValidationFilter<GymPlanDto>>();
+        group.MapDelete("/{id:int}", DeletePlanHandler);
         group.MapGet("/", GetAllPlansHandler);
         group.MapGet("/{id:int}", GetPlanHandler);
     }
@@ -24,6 +26,18 @@ public static class GymPlanEndpoints
         var response = await gymPlanService.CreatePlan(planDto);
   
         return Results.Created($"/gymplans/{response.ID}", response);
+    }
+
+    private static async Task<IResult> UpdatePlanHandler(int id, GymPlanDto planDto, GymPlanService gymPlanService)
+    {
+        var updatePlan = await gymPlanService.UpdatePlan(id, planDto);
+        return Results.Ok("Plan updated successfully.");
+    }
+
+    private static async Task<IResult> DeletePlanHandler(int id, GymPlanService gymPlanService)
+    {
+        var deletePlan = await gymPlanService.DeletePlan(id);
+        return Results.Ok("Plan deleted successfully.");
     }
 
     private static async Task<IResult> GetAllPlansHandler(GymPlanService gymPlanService)

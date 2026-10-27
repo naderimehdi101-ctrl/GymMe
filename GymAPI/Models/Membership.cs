@@ -12,4 +12,5 @@ public class Membership
     public DateOnly EndDate { get; set; }
 
     public int DurationMonths { get; set; }
+    public bool IsActive => EndDate >= DateOnly.FromDateTime(DateTime.UtcNow);
 }

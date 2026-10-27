@@ -2,13 +2,15 @@ using System;
 
 namespace GymManagementApi.DTOs.Responses;
 
-public sealed record MembershipResponse(
-    int ID,
-    int MemberID,
-    string MemberName,
-    int GymPlanID,
-    string GymPlanName,
-    decimal PricePaid,
-    DateOnly StartDate,
-    DateOnly EndDate
-);
+public sealed record MembershipResponse
+{
+    public int ID { get; init; }
+    public int MemberID { get; init; }
+    public string MemberName { get; init; } = "";
+    public int GymPlanID { get; init; }
+    public string GymPlanName { get; init; } = "";
+    public decimal PricePaid { get; init; }
+    public DateOnly StartDate { get; init; }
+    public DateOnly EndDate { get; init; }
+    public bool IsActive { get; init; }
+};
