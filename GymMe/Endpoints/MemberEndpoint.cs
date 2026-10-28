@@ -1,12 +1,11 @@
 using System;
 using FluentValidation;
-using GymManagementApi.Validators;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementApi.Validators;
 
-public static class MemberEndpoint
+public static class MemberEndpoints
 {
     public static void MapMemberEndpoints(this IEndpointRouteBuilder app)
     {
@@ -16,13 +15,13 @@ public static class MemberEndpoint
         group.MapPut("/{id:int}", UpdateMemberHandler).AddEndpointFilter<ValidationFilter<MemberDto>>();
         group.MapGet("/{id:int}", GetMemberHandler);
         group.MapDelete("/{id:int}", DeleteMemberHandler);
-        group.MapGet("/allMembers", GetAllMembersHandler);
+        group.MapGet("/", GetAllMembersHandler);
     }
 
     private static async Task<IResult> CreateMemberHandler(MemberDto memberDto, MemberService memberService)
     {
         var response = await memberService.CreateMember(memberDto);
-        return Results.Created($"Member created: {response.ID} ", response);
+        return Results.Created($"/members/{response.ID}", response);
     }
 
     private static async Task<IResult> GetMemberHandler(int id, MemberService memberService)

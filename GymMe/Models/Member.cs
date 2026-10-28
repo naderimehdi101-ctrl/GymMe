@@ -8,5 +8,5 @@ public class Member
 
     public int GymPlanId { get; set; } 
 
-    public GymPlan? GymPlan { get; set; }
+    public GymPlan GymPlan { get; set; } = null!;
 }

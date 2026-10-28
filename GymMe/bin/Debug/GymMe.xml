@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GymMe</name>
+    </assembly>
+    <members>
+        <member name="F:__CSharpShellAspNetHost.OnListening">
+            <summary>Assigned by the host; called once with the address the app bound.</summary>
+        </member>
+        <member name="F:__CSharpShellAspNetHost.Stop">
+            <summary>Assigned by the app once it is hosted; called by the host's Stop button.</summary>
+        </member>
+        <member name="F:__CSharpShellAspNetHost.StaticWebAssets">
+            <summary>
+            Assigned by the host; the folder /_framework/* is served from, or null when this project
+            needs none. See __CSharpShellFrameworkAssets.
+            </summary>
+        </member>
+        <member name="P:__CSharpShellAspNetHost.ApplicationName">
+            <summary>
+            The application name ASP.NET Core would normally take from the entry assembly.
+            </summary>
+            <remarks>
+            It has to be stated because there is no entry assembly to take it from: this program was
+            loaded from a stream into a collectible load context, so Assembly.GetEntryAssembly()
+            returns null and the name defaults to "". Two things then break — hosting startup
+            scanning throws ArgumentException("The value cannot be an empty string"), and MVC's
+            application-part discovery finds no parts, which silently 404s every Razor Page and
+            every component in the app. This type is compiled into the user's own assembly, so its
+            name is exactly the name a `dotnet run` would have used.
+            </remarks>
+        </member>
+        <member name="T:__CSharpShellHostNotifier">
+            <summary>Reports the bound address to the host, and hands the host a way to stop the app.</summary>
+        </member>
+        <member name="T:__CSharpShellFrameworkAssets">
+            <summary>
+            Serves /_framework/* — Blazor's client script — from the restored framework assets.
+            </summary>
+            <remarks>
+            blazor.web.js is not in the runtime pack and cannot be generated; the host restores it from a
+            package of its own and points StaticWebAssets at the folder. Without this the app compiles,
+            starts and server-renders every page, and is simply never interactive.
+            </remarks>
+        </member>
+        <member name="T:__CSharpShellHttpListenerServer">
+            <summary>An IServer backed by System.Net.HttpListener.</summary>
+        </member>
+        <member name="M:__CSharpShellHttpListenerServer.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Takes the app's configuration so the endpoint a Kestrel project already declares is the
+            endpoint this server binds - see ResolveConfiguredAddresses.
+            </summary>
+        </member>
+        <member name="M:__CSharpShellHttpListenerServer.ResolveConfiguredAddresses">
+            <summary>
+            The addresses this app's configuration asks for, when ASP.NET Core's own "urls" key said
+            nothing. Empty when the configuration says nothing either.
+            </summary>
+            <remarks>
+            Three shapes are read, most standard first:
+            <list type="number">
+              <item>Kestrel:Endpoints:{name}:Url - what a real Kestrel project already declares, so
+                swapping this server in for Kestrel keeps a project's appsettings.json working.
+                Every endpoint is taken, in the order they are written.</item>
+              <item>Kestrel:EndpointDefaults:Url - Kestrel's own fallback for endpoints that name
+                no URL of their own.</item>
+              <item>Server:Url(s) and WebServer:Url(s) - a plainer place to say it for a project
+                that was never a Kestrel project.</item>
+            </list>
+            Anything holding several addresses may separate them with ';', as the "urls" key does.
+            </remarks>
+        </member>
+        <member name="M:__CSharpShellHttpListenerServer.Bind(System.Collections.Generic.List{System.String})">
+            <summary>
+            Starts the listener, falling back to a free ephemeral port when the requested one is
+            taken. Without the fallback, running twice after a crash — where the previous listener
+            has not released :5000 yet — fails with a bare HttpListenerException and nothing the
+            user could act on.
+            </summary>
+        </member>
+        <member name="M:__CSharpShellHttpListenerServer.Normalize(System.String)">
+            <summary>
+            HttpListener wants a prefix, not a URL: the trailing slash is mandatory, and the several
+            spellings of "every interface" have to become the one HttpListener recognises.
+            </summary>
+            <remarks>
+            Any other host the user asked for is kept. Every host used to be rewritten to 127.0.0.1,
+            which quietly made "http://0.0.0.0:8080" - the whole point of which is to be reachable
+            from another machine - loopback-only. Binding every interface can still fail, and Bind
+            falls back to a free loopback port when it does.
+            </remarks>
+        </member>
+        <member name="M:__CSharpShellHttpListenerServer.Reported(System.String)">
+            <summary>
+            The same prefix as an address to report. A wildcard host is reported as 0.0.0.0 —
+            which is what Kestrel reports for the same binding, and what a `dotnet run` prints.
+            </summary>
+            <remarks>
+            It used to be reported as localhost, which was openable but hid the one fact that
+            matters: whether the app is loopback-only or reachable from the network. Nothing but
+            the app itself knows that, so it has to be said here — the IDE reads 0.0.0.0 as
+            "every interface" and expands it to this device's real addresses for its banner
+            (ListeningAddress.Expand). A non-wildcard prefix is already the answer and is kept.
+            </remarks>
+        </member>
+        <member name="M:__CSharpShellHttpListenerServer.Track(System.Threading.Tasks.Task)">
+            <summary>
+            Remembers a request while it runs, so <c>StopAsync</c> can drain what is still in flight.
+            </summary>
+            <remarks>
+            A discarded task is not a free-standing thing: while it runs, its state machine is on the
+            thread pool and every frame in it belongs to this program's load context. Leaving one
+            behind therefore keeps the whole context alive after the run ends — and a Blazor circuit
+            always leaves one, because SignalR's long-polling transport parks a GET on the server for
+            as long as it is allowed to. The IDE then has two copies of this program loaded on the
+            next run, which is exactly the state where a component "does not implement IComponent".
+            </remarks>
+        </member>
+        <member name="M:__CSharpShellResponseFeature.StartAsync(System.Threading.CancellationToken)">
+            <summary>
+            Sends the status line and headers, once. Everything registered through OnStarting runs
+            first and in reverse registration order, which is the order ASP.NET Core middleware
+            expects: the callback added last is the innermost one and must see the response first.
+            </summary>
+        </member>
+        <member name="T:__CSharpShellResponseStream">
+            <summary>
+            The response body, wrapped so the headers are sent on the first byte written rather than
+            eagerly. Middleware routinely sets a header after calling the next one in the pipeline, and
+            sending the status line before the pipeline has finished would silently drop those.
+            </summary>
+        </member>
+    </members>
+</doc>

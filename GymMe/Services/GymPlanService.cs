@@ -17,15 +17,11 @@ public class GymPlanService
 
     public async Task<GymPlanResponse> GetPlan(int id)
     {
-        var gymPlan = await _db.Plans.FirstOrDefaultAsync(p => p.ID == id);
+        var gymPlan = await _db.Plans.FindAsync(id);
         if(gymPlan is null)
             throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
         
-        return new GymPlanResponse(
-            ID: gymPlan.ID,
-            Name: gymPlan.Name,
-            Price: gymPlan.Price
-        );
+        return ToResponse(gymPlan);
     }
 
     public async Task<GymPlanResponse> CreatePlan(GymPlanDto planDto)
@@ -39,16 +35,12 @@ public class GymPlanService
         _db.Plans.Add(newGymPlan);
         await _db.SaveChangesAsync();
 
-        return new GymPlanResponse(
-            ID: newGymPlan.ID,
-            Name: newGymPlan.Name,
-            Price: newGymPlan.Price
-        );
+        return ToResponse(newGymPlan);
     }
 
-    public async Task<bool> UpdatePlan(int id, GymPlanDto planDto)
+    public async Task UpdatePlan(int id, GymPlanDto planDto)
     {
-        var updatePlan = await _db.Plans.FirstOrDefaultAsync(p => p.ID == id);
+        var updatePlan = await _db.Plans.FindAsync(id);
         if(updatePlan is null)
             throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
 
@@ -57,19 +49,25 @@ public class GymPlanService
         updatePlan.Price = planDto.Price;
 
         await _db.SaveChangesAsync();
-
-        return true;
     }
 
-    public async Task<bool> DeletePlan(int id)
+    public async Task DeletePlan(int id)
     {
-        var deletePlan = await _db.Plans.FirstOrDefaultAsync(p => p.ID == id);
+        var deletePlan = await _db.Plans.FindAsync(id);
         if(deletePlan is null)
             throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
 
-        await _db.Plans.RemoveAsync(deletePlan);
+        _db.Plans.Remove(deletePlan);
         await _db.SaveChangesAsync();
-
-        return true;
+    }
+    
+    private GymPlanResponse ToResponse(GymPlan plan)
+    {
+        return new GymPlanResponse
+        {
+            ID = plan.ID,
+            Name = plan.Name,
+            Price = plan.Price
+        };
     }
 }

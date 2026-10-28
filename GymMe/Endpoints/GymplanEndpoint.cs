@@ -30,13 +30,13 @@ public static class GymPlanEndpoints
 
     private static async Task<IResult> UpdatePlanHandler(int id, GymPlanDto planDto, GymPlanService gymPlanService)
     {
-        var updatePlan = await gymPlanService.UpdatePlan(id, planDto);
+        await gymPlanService.UpdatePlan(id, planDto);
         return Results.Ok("Plan updated successfully.");
     }
 
     private static async Task<IResult> DeletePlanHandler(int id, GymPlanService gymPlanService)
     {
-        var deletePlan = await gymPlanService.DeletePlan(id);
+        await gymPlanService.DeletePlan(id);
         return Results.Ok("Plan deleted successfully.");
     }
 
