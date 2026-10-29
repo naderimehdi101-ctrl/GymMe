@@ -10,4 +10,25 @@ public class AppDbContext : DbContext
     {
         
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<Member>()
+            .HasOne(x => x.GymPlan)
+            .WithMany()
+            .HasForeignKey(x => x.GymPlanId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Membership>()
+            .HasOne(x => x.Member)
+            .WithMany()
+            .HasForeignKey(x => x.MemberId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Membership>()
+            .HasOne(x => x.GymPlan)
+            .WithMany()
+            .HasForeignKey(x => x.GymPlanId)
+            .OnDelete(DeleteBehavior.Restrict);    
+    } 
 }

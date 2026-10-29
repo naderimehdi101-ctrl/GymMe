@@ -42,9 +42,9 @@ public static class MemberEndpoints
         return Results.Ok(new { Message = "Member successfully removed!" });
     }
 
-    private static async Task<IResult> GetAllMembersHandler(MemberService memberService)
+    private static async Task<IResult> GetAllMembersHandler(MemberService memberService, int page = 1, int pageSize = 10) 
     {
-        var getAllMembers = await memberService.GetAllMembers();
+        var getAllMembers = await memberService.GetAllMembers(page, pageSize);
         return Results.Ok(getAllMembers);
     }
 }

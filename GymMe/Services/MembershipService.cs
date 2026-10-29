@@ -13,6 +13,8 @@ public class MembershipService
 
     public async Task<MembershipResponse> CreateMembership(MembershipDto dto)
     {
+        var startDate = DateOnly.FromDateTime(DateTime.UtcNow);    
+        
         var member = await _db.Members.FindAsync(dto.MemberID);
         if (member is null)
             throw new KeyNotFoundException($"No Member found with that ID: {dto.MemberID}!");
@@ -21,18 +23,18 @@ public class MembershipService
         if (plan is null)
             throw new KeyNotFoundException($"No Plan found with that ID: {dto.GymPlanID}!");
             
-        var hasActiveMembership = await _db.Memberships.AnyAsync(m => m.MemberId == member.ID && m.EndDate > DateOnly.FromDateTime(DateTime.UtcNow));
+        var hasActiveMembership = await _db.Memberships.AnyAsync(m => m.MemberId == member.ID && m.EndDate > startDate);
         if(hasActiveMembership)
             throw new InvalidOperationException("Member has already an active Membership!");
-
+            
         var membership = new Membership
         {
             MemberId = dto.MemberID,
             Member = member,
             GymPlanId = dto.GymPlanID,
             GymPlan = plan,
-            StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
-            EndDate = dto.StartDate.AddMonths(dto.DurationMonths),
+            StartDate = startDate,
+            EndDate = startDate.AddMonths(dto.DurationMonths),
             DurationMonths = dto.DurationMonths,
         };
 

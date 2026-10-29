@@ -40,9 +40,9 @@ public static class GymPlanEndpoints
         return Results.Ok("Plan deleted successfully.");
     }
 
-    private static async Task<IResult> GetAllPlansHandler(GymPlanService gymPlanService)
+    private static async Task<IResult> GetAllPlansHandler(GymPlanService gymPlanService, int page = 1, int pageSize = 1)
     {
-        var plans = await gymPlanService.GetAllPlans();
+        var plans = await gymPlanService.GetAllPlans(page, pageSize);
         return Results.Ok(plans);
     }
 

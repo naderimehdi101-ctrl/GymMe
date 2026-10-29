@@ -1,4 +1,6 @@
 using FluentValidation;
+using GymManagementApi.DTOs.Responses;
+using GymMe;
 
 public sealed class MemberDataValidator : AbstractValidator<MemberDto>
 {

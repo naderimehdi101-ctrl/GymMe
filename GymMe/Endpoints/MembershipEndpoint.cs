@@ -15,13 +15,13 @@ public static class MembershipEndpoints
         group.MapGet("/{id:int}", GetMembershipHandler);
     }
 
-    private static async Task<IResult> CreateMembershipHandler(MembershipDto membershipDto, IValidator<MembershipDto> validator, MembershipService membershipService)
+    private static async Task<IResult> CreateMembershipHandler(MembershipDto membershipDto, MembershipService membershipService)
     {
         var newMembership = await membershipService.CreateMembership(membershipDto);
         return Results.Created($"/memberships/{newMembership.ID}", newMembership);
     }
     
-    private static async Task<IResult> GetMembershipHandler(int id, MembershipDto membershipDto, MembershipService membershipService)
+    private static async Task<IResult> GetMembershipHandler(int id, MembershipService membershipService)
     {
         var getMembership = await membershipService.GetMembership(id);
         return Results.Ok(getMembership);

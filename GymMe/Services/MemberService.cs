@@ -1,4 +1,5 @@
 using GymManagementApi.DTOs.Responses;
+using GymMe;
 using Microsoft.EntityFrameworkCore;
 
 public class MemberService
@@ -70,9 +71,19 @@ public class MemberService
         return ToResponse(member);
     }
 
-    public async Task<List<MemberResponse>> GetAllMembers()
+    public async Task<PagedResponse<MemberResponse>> GetAllMembers(int page, int pageSize)
     {
+        if(page < 1 || pageSize < 1)
+            throw new ArgumentException("Page & Pagesize must both be atleast 1!");
+        if(pageSize > 50)
+            pageSize = 50;
+                
+        var allMemberCount = await _db.Members.CountAsync();
+        
         var allMembers = await _db.Members
+        .OrderBy(x => x.ID)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
         .Select(x => new MemberResponse
         {
             ID = x.ID,
@@ -83,8 +94,14 @@ public class MemberService
             GymPlanPrice = x.GymPlan.Price,
         })
         .ToListAsync();
-
-        return allMembers;
+        
+        return new PagedResponse<MemberResponse>
+        {
+            Items = allMembers,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = allMemberCount
+        };
     }
     
     private MemberResponse ToResponse(Member member)

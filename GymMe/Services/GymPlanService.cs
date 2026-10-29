@@ -1,4 +1,5 @@
 using GymManagementApi.DTOs.Responses;
+using GymMe;
 using Microsoft.EntityFrameworkCore;
 
 public class GymPlanService
@@ -10,9 +11,34 @@ public class GymPlanService
         _db = db;
     }
 
-    public async Task<List<GymPlan>> GetAllPlans()
+    public async Task<PagedResponse<GymPlanResponse>> GetAllPlans(int page, int pageSize)
     {
-        return await _db.Plans.ToListAsync();
+        if(page < 1 || pageSize < 1)
+            throw new ArgumentException("Page & Pagesize must both be atleast 1!");
+        if(pageSize > 50)
+            pageSize = 50;
+            
+        var allPlansCount = await _db.Plans.CountAsync();
+        
+        var allPlans = await _db.Plans
+        .OrderBy(x => x.ID)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .Select(x => new GymPlanResponse
+        {
+            ID = x.ID,
+            Name = x.Name,
+            Price = x.Price
+        })
+        .ToListAsync();
+        
+        return new PagedResponse<GymPlanResponse>
+        {
+            Items = allPlans,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = allPlansCount
+        };
     }
 
     public async Task<GymPlanResponse> GetPlan(int id)
@@ -44,7 +70,6 @@ public class GymPlanService
         if(updatePlan is null)
             throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
 
-        updatePlan.ID = id;
         updatePlan.Name = planDto.Name;
         updatePlan.Price = planDto.Price;
 

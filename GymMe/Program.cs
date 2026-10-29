@@ -41,3 +41,4 @@ app.MapGymPlanEndpoints();
 app.MapMembershipEndpoints();
 
 app.Run();
+
