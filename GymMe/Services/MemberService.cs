@@ -73,10 +73,7 @@ public class MemberService
 
     public async Task<PagedResponse<MemberResponse>> GetAllMembers(int page, int pageSize)
     {
-        if(page < 1 || pageSize < 1)
-            throw new ArgumentException("Page & Pagesize must both be atleast 1!");
-        if(pageSize > 50)
-            pageSize = 50;
+        pageSize = PaginationHelper.ValidatePageAndPagesize(page, pageSize);
                 
         var allMemberCount = await _db.Members.CountAsync();
         

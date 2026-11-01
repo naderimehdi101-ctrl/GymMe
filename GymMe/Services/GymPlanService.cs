@@ -13,10 +13,7 @@ public class GymPlanService
 
     public async Task<PagedResponse<GymPlanResponse>> GetAllPlans(int page, int pageSize)
     {
-        if(page < 1 || pageSize < 1)
-            throw new ArgumentException("Page & Pagesize must both be atleast 1!");
-        if(pageSize > 50)
-            pageSize = 50;
+        pageSize = PaginationHelper.ValidatePageAndPagesize(page, pageSize);
             
         var allPlansCount = await _db.Plans.CountAsync();
         
@@ -69,7 +66,7 @@ public class GymPlanService
         var updatePlan = await _db.Plans.FindAsync(id);
         if(updatePlan is null)
             throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
-
+            
         updatePlan.Name = planDto.Name;
         updatePlan.Price = planDto.Price;
 
@@ -81,6 +78,14 @@ public class GymPlanService
         var deletePlan = await _db.Plans.FindAsync(id);
         if(deletePlan is null)
             throw new KeyNotFoundException($"No Plan found with that ID: {id}!");
+            
+        var hasMember = await _db.Members.AnyAsync(x => x.GymPlanId == deletePlan.ID);
+        if(hasMember)
+            throw new InvalidOperationException("The Plan is still used by Members");
+            
+        var hasMembership = await _db.Memberships.AnyAsync(x => x.GymPlanId == deletePlan.ID);
+        if(hasMembership)
+            throw new InvalidOperationException("The Plan is still used by Memberships");        
 
         _db.Plans.Remove(deletePlan);
         await _db.SaveChangesAsync();

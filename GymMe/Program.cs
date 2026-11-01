@@ -1,6 +1,8 @@
 using System;
 using FluentValidation;
 using GymManagementApi.Validators;
+using GymMe;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +16,12 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data S
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+
 builder.Services.AddScoped<GymPlanService>();
 builder.Services.AddScoped<MemberService>();
 builder.Services.AddScoped<MembershipService>();
+builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
@@ -39,6 +44,7 @@ app.UseExceptionHandler();
 app.MapMemberEndpoints();
 app.MapGymPlanEndpoints();
 app.MapMembershipEndpoints();
+app.MapAuthEndpoints();
 
 app.Run();
 
