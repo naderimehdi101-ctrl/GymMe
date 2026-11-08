@@ -1,6 +1,5 @@
-using GymManagementApi.DTOs.Responses;
-using GymMe;
-using Microsoft.EntityFrameworkCore;
+
+namespace GymMe.Service;
 
 public class GymPlanService
 {

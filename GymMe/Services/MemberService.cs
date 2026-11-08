@@ -1,6 +1,8 @@
-using GymManagementApi.DTOs.Responses;
-using GymMe;
-using Microsoft.EntityFrameworkCore;
+
+using System.Numerics;
+using Microsoft.AspNetCore.Mvc;
+
+namespace GymMe.Service;
 
 public class MemberService
 {

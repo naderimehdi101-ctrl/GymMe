@@ -1,7 +1,5 @@
-using System;
-using FluentValidation;
 
-namespace GymManagementApi.Validators;
+namespace GymMe.Validators;
 
 public class ValidationFilter<T> : IEndpointFilter where T : class
 {

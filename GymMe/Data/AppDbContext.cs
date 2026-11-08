@@ -1,7 +1,7 @@
-using FluentValidation.Validators;
-using GymMe;
-using Microsoft.EntityFrameworkCore;
+
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace GymMe.Data;
 
 public class AppDbContext : DbContext
 {

@@ -1,3 +1,6 @@
+
+namespace GymMe.Model;
+
 public class Member
 {
     public int ID { get; set; }

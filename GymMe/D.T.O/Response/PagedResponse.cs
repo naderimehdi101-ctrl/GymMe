@@ -1,6 +1,5 @@
-using System;
 
-namespace GymMe;
+namespace GymMe.Response.DTO;
 
 public class PagedResponse<T>
 {

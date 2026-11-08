@@ -1,6 +1,5 @@
-using System;
 
-namespace GymManagementApi.DTOs.Responses;
+namespace GymMe.Response.DTO;
 
 public sealed class MemberResponse
 {

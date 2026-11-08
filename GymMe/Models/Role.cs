@@ -1,6 +1,5 @@
-using System;
 
-namespace GymMe;
+namespace GymMe.Model;
 
 public enum Role
 {

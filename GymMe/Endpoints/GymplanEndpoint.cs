@@ -1,12 +1,5 @@
-using System;
-using FluentValidation;
-using GymManagementApi.Validators;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
-
-
-namespace GymManagementApi.Validators;
+namespace GymMe.Endpoint;
 
 public static class GymPlanEndpoints
 {
@@ -14,9 +7,14 @@ public static class GymPlanEndpoints
     {
         var group = app.MapGroup("/gymplans").WithTags("Gym Plans");
 
-        group.MapPost("/", CreatePlanHandler).AddEndpointFilter<ValidationFilter<GymPlanDto>>();
-        group.MapPut("/{id:int}", UpdatePlanHandler).AddEndpointFilter<ValidationFilter<GymPlanDto>>();
-        group.MapDelete("/{id:int}", DeletePlanHandler);
+        group.MapPost("/", CreatePlanHandler)
+                .RequireAuthorization()
+                .AddEndpointFilter<ValidationFilter<GymPlanDto>>();
+        group.MapPut("/{id:int}", UpdatePlanHandler)
+                .RequireAuthorization()
+                .AddEndpointFilter<ValidationFilter<GymPlanDto>>();
+        group.MapDelete("/{id:int}", DeletePlanHandler)
+                .RequireAuthorization();
         group.MapGet("/", GetAllPlansHandler);
         group.MapGet("/{id:int}", GetPlanHandler);
     }

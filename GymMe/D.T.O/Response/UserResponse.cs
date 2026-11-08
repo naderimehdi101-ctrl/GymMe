@@ -1,7 +1,7 @@
-using System;
-using GymMe;
-using Microsoft.EntityFrameworkCore;
 
+using GymMe;
+
+namespace GymMe.Response.DTO;
 
 public class UserResponse
 {

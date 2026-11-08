@@ -1,6 +1,5 @@
-using GymManagementApi.DTOs.Responses;
-using Microsoft.EntityFrameworkCore;
 
+namespace GymMe.Service;
 
 public class MembershipService
 {

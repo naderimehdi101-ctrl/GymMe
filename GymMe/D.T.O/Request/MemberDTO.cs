@@ -1,4 +1,6 @@
 
+namespace GymMe.Request.DTO;
+
 public class MemberDto
 {
     public string Name { get; set; } = string.Empty;

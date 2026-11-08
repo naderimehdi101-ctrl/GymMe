@@ -33,5 +33,8 @@
     <Compile Remove="appsettings.Developement.json.cs" />
     <Compile Remove="appsettings.Development.json.cs" />
     <Content Update="appsettings.Development.json" CopyToOutputDirectory="Never" />
+    <Compile Remove="D.T.O/Request/RegisterDTO.cs" />
+    <Compile Remove="Services/AuthService.cs" />
+    <Compile Remove="Endpoints/UserRegisterEndpoint.cs" />
   </ItemGroup>
 </Project>
