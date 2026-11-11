@@ -6,7 +6,10 @@ public static class DeleteMemberEndpoint
     {
         app.MapDelete("/members/{id:int}", async (int id, DeleteMemberHandler handler) =>
         {
-            await handler.HandleAsync(id);
+            var result = await handler.HandleAsync(id);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
+                
             return Results.Ok(new { Message = "Member successfully removed!" });
         })
         .RequireAuthorization()

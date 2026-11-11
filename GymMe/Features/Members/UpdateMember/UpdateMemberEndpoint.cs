@@ -6,7 +6,10 @@ public static class UpdateMemberEndpoint
     {
         app.MapPut("/members/{id:int}", async (int id, UpdateMemberRequest request, UpdateMemberHandler handler) =>
         {
-            await handler.HandleAsync(id, request);
+            var result = await handler.HandleAsync(id, request);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
+                
             return Results.Ok(new { Message = "Member successfully updated!" });
         })
         .RequireAuthorization()

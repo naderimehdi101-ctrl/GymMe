@@ -7,7 +7,10 @@ public static class GetMemberEndpoint
         app.MapGet("/members/{id:int}", async (int id, GetMemberHandler handler) =>
         {
             var response = await handler.HandleAsync(id);
-            return Results.Ok(response);
+            if(response.IsFailed)
+                return response.ToProblemDetails();
+                
+            return Results.Ok(response.Value);
         })
         .WithTags("Members");
     }

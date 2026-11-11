@@ -12,7 +12,7 @@ public sealed class PagedResponse<T>
 
 public class GetAllPlansHandler(AppDbContext db)
 {
-    public async Task<PagedResponse<GymPlanResponse>> HandleAsync(int page, int pageSize)
+    public async Task<Result<PagedResponse<GymPlanResponse>>> HandleAsync(int page, int pageSize)
     {
         pageSize = PaginationHelper.ValidatePageAndPagesize(page, pageSize);
 
@@ -25,12 +25,12 @@ public class GetAllPlansHandler(AppDbContext db)
             .Select(x => new GymPlanResponse(x.ID, x.Name, x.Price))
             .ToListAsync();
 
-        return new PagedResponse<GymPlanResponse>
+        return Result.Ok(new PagedResponse<GymPlanResponse>
         {
             Items = allPlans,
             Page = page,
             PageSize = pageSize,
             TotalCount = allPlansCount
-        };
+        });
     }
 }

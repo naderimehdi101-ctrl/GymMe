@@ -5,11 +5,11 @@ public sealed record MemberResponse(int ID, string Name, int Age, int GymPlanId,
 
 public class CreateMemberHandler(AppDbContext db)
 {
-    public async Task<MemberResponse> HandleAsync(CreateMemberRequest request)
+    public async Task<Result<MemberResponse>> HandleAsync(CreateMemberRequest request)
     {
         var plan = await db.Plans.FindAsync(request.GymPlanId);
         if (plan is null)
-            throw new KeyNotFoundException($"No Plan found with that ID: {request.GymPlanId}!");
+            return Result.Fail<MemberResponse>($"No Plan found with that ID: {request.GymPlanId}!");
 
         var newMember = new Member
         {
@@ -22,13 +22,13 @@ public class CreateMemberHandler(AppDbContext db)
         db.Members.Add(newMember);
         await db.SaveChangesAsync();
 
-        return new MemberResponse(
+        return Result.Ok(new MemberResponse(
             newMember.ID,
             newMember.Name,
             newMember.Age,
             newMember.GymPlanId,
             plan.Name,
             plan.Price
-        );
+        ));
     }
 }

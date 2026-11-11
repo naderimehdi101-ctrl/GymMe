@@ -9,26 +9,26 @@ public sealed record LoginResponse(int ID, string Token, string Email, Role Role
 
 public class LoginHandler(AppDbContext db, IPasswordHasher<User> hasher, IConfiguration configuration)
 {
-    public async Task<LoginResponse> HandleAsync(LoginRequest request)
+    public async Task<Result<LoginResponse>> HandleAsync(LoginRequest request)
     {
         var email = request.Email.ToLower().Trim();
         var user = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
 
         if (user is null)
-            throw new InvalidOperationException("Invalid email or password");
+            return Result.Fail<LoginResponse>("Invalid email or password");
 
         var verifyPassword = hasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
         if (verifyPassword == PasswordVerificationResult.Failed)
-            throw new InvalidOperationException("Invalid email or password");
+            return Result.Fail<LoginResponse>("Invalid email or password");
 
         var token = GenerateJWTToken(user);
 
-        return new LoginResponse(user.ID, token, user.Email, user.Role);
+        return Result.Ok(new LoginResponse(user.ID, token, user.Email, user.Role));
     }
 
     private string GenerateJWTToken(User user)
     {
-        var jwtKey = configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt key is missing");
+        var jwtKey = configuration["Jwt:Key"] ?? throw new ("Jwt key is missing");
         var jwtIssuer = configuration["Jwt:Issuer"];
         var jwtAudience = configuration["Jwt:Audience"];
 

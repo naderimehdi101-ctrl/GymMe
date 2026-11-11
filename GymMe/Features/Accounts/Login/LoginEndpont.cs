@@ -7,7 +7,10 @@ public static class LoginEndpoint
         app.MapPost("/accounts/login", async (LoginRequest request, LoginHandler handler) =>
         {
             var response = await handler.HandleAsync(request);
-            return Results.Ok(response);
+            if(response.IsFailed)
+                return response.ToProblemDetails();
+                
+            return Results.Ok(response.Value);
         })
         .WithTags("Registration");
     }

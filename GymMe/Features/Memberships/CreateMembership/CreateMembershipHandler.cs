@@ -16,21 +16,21 @@ public sealed record MembershipResponse(
 
 public class CreateMembershipHandler(AppDbContext db)
 {
-    public async Task<MembershipResponse> HandleAsync(CreateMembershipRequest request)
+    public async Task<Result<MembershipResponse>> HandleAsync(CreateMembershipRequest request)
     {
         var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
         var member = await db.Members.FindAsync(request.MemberID);
         if (member is null)
-            throw new KeyNotFoundException($"No Member found with that ID: {request.MemberID}!");
+            return Result.Fail<MembershipResponse>($"No Member found with that ID: {request.MemberID}!");
 
         var plan = await db.Plans.FindAsync(request.GymPlanID);
         if (plan is null)
-            throw new KeyNotFoundException($"No Plan found with that ID: {request.GymPlanID}!");
+            return Result.Fail<MembershipResponse>($"No Plan found with that ID: {request.GymPlanID}!");
 
         var hasActiveMembership = await db.Memberships.AnyAsync(m => m.MemberId == member.ID && m.EndDate > startDate);
         if (hasActiveMembership)
-            throw new InvalidOperationException("Member has already an active Membership!");
+            return Result.Fail<MembershipResponse>("Member has already an active Membership!");
 
         var membership = new Membership
         {
@@ -46,7 +46,7 @@ public class CreateMembershipHandler(AppDbContext db)
         db.Memberships.Add(membership);
         await db.SaveChangesAsync();
 
-        return new MembershipResponse(
+        return Result.Ok(new MembershipResponse(
             membership.ID,
             membership.MemberId,
             member.Name,
@@ -56,6 +56,6 @@ public class CreateMembershipHandler(AppDbContext db)
             membership.StartDate,
             membership.EndDate,
             membership.IsActive
-        );
+        ));
     }
 }

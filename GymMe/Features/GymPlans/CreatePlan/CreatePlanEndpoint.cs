@@ -7,9 +7,12 @@ public static class CreatePlanEndpoint
         app.MapPost("/plans", async (CreatePlanRequest request, CreatePlanHandler handler) =>
         {
             var response = await handler.HandleAsync(request);
-            return Results.Created($"/plans/{response.ID}", response);
+            if(response.IsFailed)
+                return response.ToProblemDetails();
+                
+            return Results.Created($"/plans/{response.Value.ID}", response.Value);
         })
-        .RequireAuthorization()
+        .RequireAuthorization("Member")
         .AddEndpointFilter<ValidationFilter<CreatePlanRequest>>()
         .WithTags("GymPlans");
     }

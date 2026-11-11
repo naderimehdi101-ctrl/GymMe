@@ -6,7 +6,10 @@ public static class UpdatePlanEndpoint
     {
         app.MapPut("/plans/{id:int}", async (int id, UpdatePlanRequest request, UpdatePlanHandler handler) =>
         {
-            await handler.HandleAsync(id, request);
+            var result = await handler.HandleAsync(id, request);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
+            
             return Results.Ok(new { Message = "Plan successfully updated!" });
         })
         .RequireAuthorization()

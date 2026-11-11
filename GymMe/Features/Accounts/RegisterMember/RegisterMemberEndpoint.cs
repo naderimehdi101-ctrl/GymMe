@@ -7,7 +7,10 @@ public static class RegisterMemberEndpoint
         app.MapPost("/accounts/member", async (RegisterMemberRequest request, RegisterMemberHandler handler) =>
         {
             var result = await handler.HandleAsync(request);
-            return Results.Created($"/accounts/member/{result.ID}", result);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
+                
+            return Results.Created($"/accounts/member/{result.Value.ID}", result.Value);
         })
         .AddEndpointFilter<ValidationFilter<RegisterMemberRequest>>()
         .WithTags("Registration");

@@ -12,7 +12,7 @@ public sealed record PagedResponse<T>
 
 public class GetAllMembersHandler(AppDbContext db)
 {
-    public async Task<PagedResponse<MemberResponse>> HandleAsync(int page, int pageSize)
+    public async Task<Result<PagedResponse<MemberResponse>>> HandleAsync(int page, int pageSize)
     {
         pageSize = PaginationHelper.ValidatePageAndPagesize(page, pageSize);
 
@@ -32,12 +32,12 @@ public class GetAllMembersHandler(AppDbContext db)
             ))
             .ToListAsync();
 
-        return new PagedResponse<MemberResponse>
+        return Result.Ok(new PagedResponse<MemberResponse>
         {
             Items = members,
             Page = page,
             PageSize = pageSize,
             TotalCount = totalCount
-        };
+        });
     }
 }

@@ -36,5 +36,9 @@
     <Compile Remove="D.T.O/Request/RegisterDTO.cs" />
     <Compile Remove="Services/AuthService.cs" />
     <Compile Remove="Endpoints/UserRegisterEndpoint.cs" />
+    <Compile Remove="MemberTest.cs" />
+    <Compile Remove="ServiceCollectionExtensions.cs" />
+    <Compile Remove="EndpointExtensions.cs" />
+    <PackageReference Include="FluentResults" Version="4.0.0" />
   </ItemGroup>
 </Project>

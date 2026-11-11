@@ -5,13 +5,13 @@ public sealed record RegisterTrainerResponse(int ID, string Email, Role Role);
 
 public class RegisterTrainerHandler(AppDbContext db, IPasswordHasher<User> hasher)
 {
-    public async Task<RegisterTrainerResponse> HandleAsync(RegisterTrainerRequest request)
+    public async Task<Result<RegisterTrainerResponse>> HandleAsync(RegisterTrainerRequest request)
     {
         var email = request.Email.ToLower().Trim();
 
         var emailExists = await db.Users.AnyAsync(x => x.Email == email);
         if (emailExists)
-            throw new InvalidOperationException("The Email already exists");
+            return Result.Fail<RegisterTrainerResponse>("The Email already exists!");
 
         var user = new User
         {
@@ -24,6 +24,6 @@ public class RegisterTrainerHandler(AppDbContext db, IPasswordHasher<User> hashe
         db.Users.Add(user);
         await db.SaveChangesAsync();
 
-        return new RegisterTrainerResponse(user.ID, user.Email, user.Role);
+        return Result.Ok(new RegisterTrainerResponse(user.ID, user.Email, user.Role));
     }
 }

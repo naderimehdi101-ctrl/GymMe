@@ -6,7 +6,10 @@ public static class DeletePlanEndpoint
     {
         app.MapDelete("/plans/{id:int}", async (int id, DeletePlanHandler handler) =>
         {
-            await handler.HandleAsync(id);
+            var result = await handler.HandleAsync(id);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
+                
             return Results.Ok(new { Message = "Plan successfully removed!" });
         })
         .RequireAuthorization()

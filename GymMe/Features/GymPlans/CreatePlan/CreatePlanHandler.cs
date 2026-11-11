@@ -5,7 +5,7 @@ public sealed record GymPlanResponse(int ID, string Name, decimal Price);
 
 public class CreatePlanHandler(AppDbContext db)
 {
-    public async Task<GymPlanResponse> HandleAsync(CreatePlanRequest request)
+    public async Task<Result<GymPlanResponse>> HandleAsync(CreatePlanRequest request)
     {
         var newGymPlan = new GymPlan
         {
@@ -16,6 +16,6 @@ public class CreatePlanHandler(AppDbContext db)
         db.Plans.Add(newGymPlan);
         await db.SaveChangesAsync();
 
-        return new GymPlanResponse(newGymPlan.ID, newGymPlan.Name, newGymPlan.Price);
+        return Result.Ok(new GymPlanResponse(newGymPlan.ID, newGymPlan.Name, newGymPlan.Price));
     }
 }

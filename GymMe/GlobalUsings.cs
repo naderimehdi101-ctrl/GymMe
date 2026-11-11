@@ -3,12 +3,14 @@
 
 global using Microsoft.EntityFrameworkCore;
 global using FluentValidation;
+global using FluentResults;
 global using System;
 global using System.Text;
 global using Microsoft.AspNetCore.Mvc.Filters;
 global using Microsoft.AspNetCore.Identity;
 global using GymMe.Data;
 global using GymMe.Model;
+global using GymMe.Extensions;
 global using GymMe;
 
 // Namespaces //
