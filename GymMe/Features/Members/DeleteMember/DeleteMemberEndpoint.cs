@@ -12,7 +12,7 @@ public static class DeleteMemberEndpoint
                 
             return Results.Ok(new { Message = "Member successfully removed!" });
         })
-        .RequireAuthorization()
+        .RequireAuthorization("Admin")
         .WithTags("Members");
     }
 }

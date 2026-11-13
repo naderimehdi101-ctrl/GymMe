@@ -40,5 +40,6 @@
     <Compile Remove="ServiceCollectionExtensions.cs" />
     <Compile Remove="EndpointExtensions.cs" />
     <PackageReference Include="FluentResults" Version="4.0.0" />
+    <Compile Remove="ValidationFilter.cs" />
   </ItemGroup>
 </Project>

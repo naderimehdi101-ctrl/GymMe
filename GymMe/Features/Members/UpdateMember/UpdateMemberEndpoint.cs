@@ -12,7 +12,7 @@ public static class UpdateMemberEndpoint
                 
             return Results.Ok(new { Message = "Member successfully updated!" });
         })
-        .RequireAuthorization()
+        .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<UpdateMemberRequest>>()
         .WithTags("Members");
     }

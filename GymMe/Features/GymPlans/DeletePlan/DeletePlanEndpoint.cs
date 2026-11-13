@@ -12,7 +12,7 @@ public static class DeletePlanEndpoint
                 
             return Results.Ok(new { Message = "Plan successfully removed!" });
         })
-        .RequireAuthorization()
+        .RequireAuthorization("Admin")
         .WithTags("GymPlans");
     }
 }

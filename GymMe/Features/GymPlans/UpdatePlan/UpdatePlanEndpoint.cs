@@ -12,7 +12,7 @@ public static class UpdatePlanEndpoint
             
             return Results.Ok(new { Message = "Plan successfully updated!" });
         })
-        .RequireAuthorization()
+        .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<UpdatePlanRequest>>()
         .WithTags("GymPlans");
     }

@@ -13,6 +13,7 @@ public static class RegisterTrainerEndpoint
             return Results.Created($"/accounts/trainer/{result.Value.ID}", result.Value);
         })
         .AddEndpointFilter<ValidationFilter<RegisterTrainerRequest>>()
+        .RequireAuthorization()
         .WithTags("Registration");
     }
 }

@@ -12,7 +12,7 @@ public static class CreatePlanEndpoint
                 
             return Results.Created($"/plans/{response.Value.ID}", response.Value);
         })
-        .RequireAuthorization("MemberAccess")
+        .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<CreatePlanRequest>>()
         .WithTags("GymPlans");
     }

@@ -12,7 +12,7 @@ public static class CreateMemberEndpoint
                 
             return Results.Created($"/members/{response.Value.ID}", response.Value);
         })
-        .RequireAuthorization()
+        .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<CreateMemberRequest>>()
         .WithTags("Members");
     }
