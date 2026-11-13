@@ -7,45 +7,41 @@ A modern backend API for gym management built with **.NET Core Minimal APIs**, *
 ## 📂 Project Directory Structure
 
 ```text
-GymMe/
-├── Features/
-│   ├── Accounts/
-│   │   ├── Login/
-│   │   │   ├── LoginEndpoint.cs
-│   │   │   ├── LoginHandler.cs
-│   │   │   └── LoginValidator.cs
-│   │   ├── RegisterMember/
-│   │   │   ├── RegisterMemberEndpoint.cs
-│   │   │   ├── RegisterMemberHandler.cs
-│   │   │   └── RegisterMemberValidator.cs
-│   │   └── RegisterTrainer/
-│   │       ├── RegisterTrainerEndpoint.cs
-│   │       ├── RegisterTrainerHandler.cs
-│   │       └── RegisterTrainerValidator.cs
-│   ├── Members/
-│   │   ├── CreateMember/
-│   │   ├── GetMember/
-│   │   ├── GetAllMembers/
-│   │   ├── UpdateMember/
-│   │   └── DeleteMember/
-│   ├── GymPlans/
-│   │   ├── CreatePlan/
-│   │   ├── GetPlan/
-│   │   ├── GetAllPlans/
-│   │   ├── UpdatePlan/
-│   │   └── DeletePlan/
-│   └── Memberships/
-│       ├── CreateMembership/
-│       └── GetMembership/
-├── Data/
-│   └── AppDbContext.cs
-├── Models/
-│   ├── User.cs
-│   ├── Member.cs
-│   ├── GymPlan.cs
-│   └── Membership.cs
-├── GlobalUsings.cs
-└── Program.cs
+GymMe (Solution)
+└── GymMe (Project)
+    ├── Data/
+    │   └── AppDbContext.cs
+    ├── Features/
+    │   ├── Accounts/
+    │   │   ├── Login/
+    │   │   ├── RegisterMember/
+    │   │   └── RegisterTrainer/
+    │   ├── GymPlans/
+    │   │   ├── CreatePlan/
+    │   │   ├── DeletePlan/
+    │   │   ├── GetAllPlans/
+    │   │   ├── GetPlan/
+    │   │   └── UpdatePlan/
+    │   ├── Members/
+    │   │   ├── CreateMember/
+    │   │   ├── DeleteMember/
+    │   │   ├── GetAllMember/
+    │   │   ├── GetMember/
+    │   │   └── UpdateMember/
+    │   └── Memberships/
+    │       ├── CreateMembership/
+    │       └── GetMembership/
+    ├── Models/
+    ├── Others/
+    ├── Properties/
+    ├── Extensions.cs
+    ├── GlobalExceptionHandler.cs
+    ├── GlobalUsings.cs
+    ├── Program.cs
+    ├── ValidationFilter.cs
+    ├── GymMe.slnx
+    └── README.md
+
 ```
 
 ---
