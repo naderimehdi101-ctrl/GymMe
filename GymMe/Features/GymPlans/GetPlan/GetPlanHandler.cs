@@ -8,11 +8,17 @@ public class GetPlanHandler(AppDbContext db)
     {
         var gymPlan = await db.Plans
         .AsNoTracking()
-        .FirstOrDefaultAsync(x => x.ID == id);
+        .Where(x => x.ID == id)
+        .Select(x => new GymPlanResponse(
+            x.ID,
+            x.Name,
+            x.Price
+        ))
+        .FirstOrDefaultAsync();
         
         if (gymPlan is null)
             return Result.Fail<GymPlanResponse>($"No Plan found with that ID: {id}!");
 
-        return Result.Ok(new GymPlanResponse(gymPlan.ID, gymPlan.Name, gymPlan.Price));
+        return Result.Ok(gymPlan);
     }
 }

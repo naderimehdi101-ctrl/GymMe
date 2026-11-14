@@ -7,21 +7,21 @@ public class GetMemberHandler(AppDbContext db)
     public async Task<Result<MemberResponse>> HandleAsync(int id)
     {
         var member = await db.Members
-            .Include(m => m.GymPlan)
-            .AsSplitQuery()
             .AsNoTracking()
-            .FirstOrDefaultAsync(m => m.ID == id);
+            .Where(m => m.ID == id)
+            .Select(x => new MemberResponse(
+            x.ID,
+            x.Name,
+            x.Age,
+            x.GymPlanId,
+            x.GymPlan.Name,
+            x.GymPlan.Price
+    ))
+    .FirstOrDefaultAsync();
 
         if (member is null)
             return Result.Fail<MemberResponse>($"No Member found with that ID: {id}!");
 
-        return Result.Ok(new MemberResponse(
-            member.ID,
-            member.Name,
-            member.Age,
-            member.GymPlanId,
-            member.GymPlan.Name,
-            member.GymPlan.Price
-        ));
+        return Result.Ok(member);
     }
 }
