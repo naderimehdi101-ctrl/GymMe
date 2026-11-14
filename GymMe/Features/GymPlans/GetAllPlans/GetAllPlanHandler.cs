@@ -23,6 +23,7 @@ public class GetAllPlansHandler(AppDbContext db)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(x => new GymPlanResponse(x.ID, x.Name, x.Price))
+            .AsNoTracking()
             .ToListAsync();
 
         return Result.Ok(new PagedResponse<GymPlanResponse>

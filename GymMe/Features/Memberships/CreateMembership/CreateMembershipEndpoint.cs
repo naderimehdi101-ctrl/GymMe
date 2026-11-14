@@ -1,3 +1,6 @@
+
+
+
 namespace GymMe.Features.Memberships.CreateMembership;
 
 public static class CreateMembershipEndpoint

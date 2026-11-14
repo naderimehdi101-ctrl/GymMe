@@ -19,6 +19,8 @@ public class GetMembershipHandler(AppDbContext db)
         var membership = await db.Memberships
             .Include(x => x.Member)
             .Include(x => x.GymPlan)
+            .AsSplitQuery()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ID == id);
 
         if (membership is null)

@@ -8,6 +8,8 @@ public class GetMemberHandler(AppDbContext db)
     {
         var member = await db.Members
             .Include(m => m.GymPlan)
+            .AsSplitQuery()
+            .AsNoTracking()
             .FirstOrDefaultAsync(m => m.ID == id);
 
         if (member is null)

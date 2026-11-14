@@ -30,6 +30,7 @@ public class GetAllMembersHandler(AppDbContext db)
                 x.GymPlan.Name,
                 x.GymPlan.Price
             ))
+            .AsNoTracking()
             .ToListAsync();
 
         return Result.Ok(new PagedResponse<MemberResponse>
