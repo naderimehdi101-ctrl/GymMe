@@ -12,6 +12,7 @@ public static class GetAllPlansEndpoint
                 
             return Results.Ok(response.Value);
         })
+        .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
         .WithTags("GymPlans");
     }
 }

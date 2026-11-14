@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using GymMe;
 using GymMe.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=Database"));
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+builder.Services.AddOutputCache();
 
 builder.AddApplicationServices();
 
@@ -42,6 +45,8 @@ builder.AddSwaggerAuth();
 var app = builder.Build();
 
 app.UseExceptionHandler();
+
+app.UseOutputCache();
 
 app.UseSwagger();
 app.UseSwaggerUI();
