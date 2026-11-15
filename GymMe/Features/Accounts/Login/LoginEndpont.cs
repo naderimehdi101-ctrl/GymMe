@@ -6,11 +6,11 @@ public static class LoginEndpoint
     {
         app.MapPost("/accounts/login", async (LoginRequest request, LoginHandler handler) =>
         {
-            var response = await handler.HandleAsync(request);
-            if(response.IsFailed)
-                return response.ToProblemDetails();
+            var result = await handler.HandleAsync(request);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
                 
-            return Results.Ok(response.Value);
+            return Results.Ok(result.Value);
         })
         .WithTags("Registration");
     }

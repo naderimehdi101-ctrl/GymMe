@@ -6,9 +6,9 @@ public class DeleteMemberHandler(AppDbContext db)
     {
         var foundMember = await db.Members.FindAsync(id);
         if (foundMember is null)
-            return Result.Fail($"No Member found with that ID: {id}");
+            return Result.Fail($"No Member found with that ID: {id}!");
 
-        var hasMembership = await db.Memberships.AnyAsync(x => x.MemberId == foundMember.ID && x.EndDate >= DateOnly.FromDateTime(DateTime.UtcNow));
+        var hasMembership = await db.Memberships.AnyAsync(x => x.MemberId == foundMember.Id && x.EndDate >= DateOnly.FromDateTime(DateTime.UtcNow));
         if (hasMembership)
             return Result.Fail("Member has an active membership!");
 

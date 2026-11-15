@@ -19,11 +19,11 @@ public class GetAllMembersHandler(AppDbContext db)
         var totalCount = await db.Members.CountAsync();
 
         var members = await db.Members
-            .OrderBy(x => x.ID)
+            .OrderBy(x => x.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(x => new MemberResponse(
-                x.ID,
+                x.Id,
                 x.Name,
                 x.Age,
                 x.GymPlanId,

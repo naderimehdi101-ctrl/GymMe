@@ -8,11 +8,11 @@ public class DeletePlanHandler(AppDbContext db)
         if (deletePlan is null)
             return Result.Fail($"No Plan found with that ID: {id}!");
 
-        var hasMember = await db.Members.AnyAsync(x => x.GymPlanId == deletePlan.ID);
+        var hasMember = await db.Members.AnyAsync(x => x.GymPlanId == deletePlan.Id);
         if (hasMember)
             return Result.Fail("The Plan is still used by Members");
 
-        var hasMembership = await db.Memberships.AnyAsync(x => x.GymPlanId == deletePlan.ID);
+        var hasMembership = await db.Memberships.AnyAsync(x => x.GymPlanId == deletePlan.Id);
         if (hasMembership)
             return Result.Fail("The Plan is still used by Memberships");
 

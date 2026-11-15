@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="GymMe.Tests/GymMe.Tests.csproj" Id="8b1d1839-2bd7-4003-8086-36c9f65fe1e5" />
+  <Project Path="GymMe.UnitTests/GymMe.UnitTests.csproj" Id="2f74a4d1-816a-4c80-89b3-7b348fae5d7e" />
   <Project Path="GymMe/GymMe.csproj" Id="6fb2b4a8-851f-4d17-8d16-ec02517fc4b0" />
 </Solution>

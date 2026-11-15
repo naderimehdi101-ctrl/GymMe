@@ -9,11 +9,11 @@ public static class CreateMembershipEndpoint
     {
         app.MapPost("/memberships", async (CreateMembershipRequest request, CreateMembershipHandler handler) =>
         {
-            var response = await handler.HandleAsync(request);
-            if(response.IsFailed)
-                return response.ToProblemDetails();
+            var result = await handler.HandleAsync(request);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
                 
-            return Results.Created($"/memberships/{response.Value.ID}", response.Value);
+            return Results.Created($"/memberships/{result.Value.ID}", result.Value);
         })
         .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<CreateMembershipRequest>>()

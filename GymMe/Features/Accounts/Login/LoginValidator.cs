@@ -10,12 +10,12 @@ public sealed class LoginValidator : AbstractValidator<LoginRequest>
             .EmailAddress()
             .WithMessage("Invalid Email format!")
             .MaximumLength(100)
-            .WithMessage("Email maximum length: 100");
+            .WithMessage("Email maximum length: 100!");
 
         RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("Password cannot be empty!")
             .MinimumLength(8)
-            .WithMessage("Password minimum length: 8");
+            .WithMessage("Password minimum length: 8!");
     }
 }

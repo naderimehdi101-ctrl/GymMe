@@ -1,7 +1,7 @@
 namespace GymMe.Features.Members.CreateMember;
 
 public sealed record CreateMemberRequest(string Name, int Age, int GymPlanId);
-public sealed record MemberResponse(int ID, string Name, int Age, int GymPlanId, string GymPlanName, decimal GymPlanPrice);
+public sealed record MemberResponse(int Id, string Name, int Age, int GymPlanId, string GymPlanName, decimal GymPlanPrice);
 
 public class CreateMemberHandler(AppDbContext db)
 {
@@ -23,7 +23,7 @@ public class CreateMemberHandler(AppDbContext db)
         await db.SaveChangesAsync();
 
         return Result.Ok(new MemberResponse(
-            newMember.ID,
+            newMember.Id,
             newMember.Name,
             newMember.Age,
             newMember.GymPlanId,

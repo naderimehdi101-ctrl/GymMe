@@ -6,11 +6,11 @@ public static class GetMemberEndpoint
     {
         app.MapGet("/members/{id:int}", async (int id, GetMemberHandler handler) =>
         {
-            var response = await handler.HandleAsync(id);
-            if(response.IsFailed)
-                return response.ToProblemDetails();
+            var result = await handler.HandleAsync(id);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
                 
-            return Results.Ok(response.Value);
+            return Results.Ok(result.Value);
         })
         .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
         .WithTags("Members");

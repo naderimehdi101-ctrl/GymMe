@@ -1,12 +1,12 @@
 namespace GymMe.Features.Memberships.CreateMembership;
 
-public sealed record CreateMembershipRequest(int MemberID, int GymPlanID, int DurationMonths);
+public sealed record CreateMembershipRequest(int MemberId, int GymPlanId, int DurationMonths);
 
 public sealed record MembershipResponse(
     int ID,
-    int MemberID,
+    int MemberId,
     string MemberName,
-    int GymPlanID,
+    int GymPlanId,
     string GymPlanName,
     decimal PricePaid,
     DateOnly StartDate,
@@ -20,23 +20,23 @@ public class CreateMembershipHandler(AppDbContext db)
     {
         var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
-        var member = await db.Members.FindAsync(request.MemberID);
+        var member = await db.Members.FindAsync(request.MemberId);
         if (member is null)
-            return Result.Fail<MembershipResponse>($"No Member found with that ID: {request.MemberID}!");
+            return Result.Fail<MembershipResponse>($"No Member found with that ID: {request.MemberId}!");
 
-        var plan = await db.Plans.FindAsync(request.GymPlanID);
+        var plan = await db.Plans.FindAsync(request.GymPlanId);
         if (plan is null)
-            return Result.Fail<MembershipResponse>($"No Plan found with that ID: {request.GymPlanID}!");
+            return Result.Fail<MembershipResponse>($"No Plan found with that ID: {request.GymPlanId}!");
 
-        var hasActiveMembership = await db.Memberships.AnyAsync(m => m.MemberId == member.ID && m.EndDate > startDate);
+        var hasActiveMembership = await db.Memberships.AnyAsync(m => m.MemberId == member.Id && m.EndDate > startDate);
         if (hasActiveMembership)
             return Result.Fail<MembershipResponse>("Member has already an active Membership!");
 
         var membership = new Membership
         {
-            MemberId = request.MemberID,
+            MemberId = request.MemberId,
             Member = member,
-            GymPlanId = request.GymPlanID,
+            GymPlanId = request.GymPlanId,
             GymPlan = plan,
             StartDate = startDate,
             EndDate = startDate.AddMonths(request.DurationMonths),
@@ -47,7 +47,7 @@ public class CreateMembershipHandler(AppDbContext db)
         await db.SaveChangesAsync();
 
         return Result.Ok(new MembershipResponse(
-            membership.ID,
+            membership.Id,
             membership.MemberId,
             member.Name,
             membership.GymPlanId,

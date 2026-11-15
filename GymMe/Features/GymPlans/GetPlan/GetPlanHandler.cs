@@ -1,6 +1,6 @@
 namespace GymMe.Features.GymPlans.GetPlan;
 
-public sealed record GymPlanResponse(int ID, string Name, decimal Price);
+public sealed record GymPlanResponse(int Id, string Name, decimal Price);
 
 public class GetPlanHandler(AppDbContext db)
 {
@@ -8,9 +8,9 @@ public class GetPlanHandler(AppDbContext db)
     {
         var gymPlan = await db.Plans
         .AsNoTracking()
-        .Where(x => x.ID == id)
+        .Where(x => x.Id == id)
         .Select(x => new GymPlanResponse(
-            x.ID,
+            x.Id,
             x.Name,
             x.Price
         ))

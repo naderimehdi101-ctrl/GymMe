@@ -1,6 +1,6 @@
 namespace GymMe.Features.Members.GetMember;
 
-public sealed record MemberResponse(int ID, string Name, int Age, int GymPlanId, string GymPlanName, decimal GymPlanPrice);
+public sealed record MemberResponse(int Id, string Name, int Age, int GymPlanId, string GymPlanName, decimal GymPlanPrice);
 
 public class GetMemberHandler(AppDbContext db)
 {
@@ -8,9 +8,9 @@ public class GetMemberHandler(AppDbContext db)
     {
         var member = await db.Members
             .AsNoTracking()
-            .Where(m => m.ID == id)
+            .Where(m => m.Id == id)
             .Select(x => new MemberResponse(
-            x.ID,
+            x.Id,
             x.Name,
             x.Age,
             x.GymPlanId,

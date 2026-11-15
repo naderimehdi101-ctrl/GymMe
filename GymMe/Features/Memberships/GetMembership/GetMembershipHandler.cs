@@ -1,10 +1,10 @@
 namespace GymMe.Features.Memberships.GetMembership;
 
 public sealed record MembershipResponse(
-    int ID,
-    int MemberID,
+    int Id,
+    int MemberId,
     string MemberName,
-    int GymPlanID,
+    int GymPlanId,
     string GymPlanName,
     decimal PricePaid,
     DateOnly StartDate,
@@ -18,9 +18,9 @@ public class GetMembershipHandler(AppDbContext db)
     {
         var membership = await db.Memberships
             .AsNoTracking()
-            .Where(x => x.ID == id)
+            .Where(x => x.Id == id)
             .Select(x => new MembershipResponse(
-                x.ID,
+                x.Id,
                 x.MemberId,
                 x.Member.Name,
                 x.GymPlanId,

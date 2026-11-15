@@ -1,6 +1,6 @@
 namespace GymMe.Features.GymPlans.GetAllPlans;
 
-public sealed record GymPlanResponse(int ID, string Name, decimal Price);
+public sealed record GymPlanResponse(int Id, string Name, decimal Price);
 
 public sealed class PagedResponse<T>
 {
@@ -19,10 +19,10 @@ public class GetAllPlansHandler(AppDbContext db)
         var allPlansCount = await db.Plans.CountAsync();
 
         var allPlans = await db.Plans
-            .OrderBy(x => x.ID)
+            .OrderBy(x => x.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(x => new GymPlanResponse(x.ID, x.Name, x.Price))
+            .Select(x => new GymPlanResponse(x.Id, x.Name, x.Price))
             .AsNoTracking()
             .ToListAsync();
 

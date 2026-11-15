@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace GymMe.Features.Accounts.RegisterTrainer;
 
 public sealed record RegisterTrainerRequest(string Email, string Password);
@@ -24,6 +26,6 @@ public class RegisterTrainerHandler(AppDbContext db, IPasswordHasher<User> hashe
         db.Users.Add(user);
         await db.SaveChangesAsync();
 
-        return Result.Ok(new RegisterTrainerResponse(user.ID, user.Email, user.Role));
+        return Result.Ok(new RegisterTrainerResponse(user.Id, user.Email, user.Role));
     }
 }

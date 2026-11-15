@@ -6,11 +6,11 @@ public static class CreatePlanEndpoint
     {
         app.MapPost("/plans", async (CreatePlanRequest request, CreatePlanHandler handler) =>
         {
-            var response = await handler.HandleAsync(request);
-            if(response.IsFailed)
-                return response.ToProblemDetails();
+            var result = await handler.HandleAsync(request);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
                 
-            return Results.Created($"/plans/{response.Value.ID}", response.Value);
+            return Results.Created($"/plans/{result.Value.ID}", result.Value);
         })
         .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<CreatePlanRequest>>()

@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace GymMe.Features.Accounts.Login;
 
 public sealed record LoginRequest(string Email, string Password);
-public sealed record LoginResponse(int ID, string Token, string Email, Role Role);
+public sealed record LoginResponse(int Id, string Token, string Email, Role Role);
 
 public class LoginHandler(AppDbContext db, IPasswordHasher<User> hasher, IConfiguration configuration)
 {
@@ -24,7 +24,7 @@ public class LoginHandler(AppDbContext db, IPasswordHasher<User> hasher, IConfig
 
         var token = GenerateJWTToken(user);
 
-        return Result.Ok(new LoginResponse(user.ID, token, user.Email, user.Role));
+        return Result.Ok(new LoginResponse(user.Id, token, user.Email, user.Role));
     }
 
     private string GenerateJWTToken(User user)
@@ -38,7 +38,7 @@ public class LoginHandler(AppDbContext db, IPasswordHasher<User> hasher, IConfig
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.ID.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(ClaimTypes.Role, user.Role.ToString())
         };

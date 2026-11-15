@@ -27,6 +27,6 @@ public class RegisterMemberHandler(AppDbContext db, IPasswordHasher<User> hasher
         db.Users.Add(user);
         await db.SaveChangesAsync();
 
-        return Result.Ok(new RegisterMemberResponse(user.ID, user.Email, user.Role));
+        return Result.Ok(new RegisterMemberResponse(user.Id, user.Email, user.Role));
     }
 }

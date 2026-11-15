@@ -6,11 +6,11 @@ public static class GetPlanEndpoint
     {
         app.MapGet("/plans/{id:int}", async (int id, GetPlanHandler handler) =>
         {
-            var response = await handler.HandleAsync(id);
-            if(response.IsFailed)
-                return response.ToProblemDetails();
+            var result = await handler.HandleAsync(id);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
                 
-            return Results.Ok(response.Value);
+            return Results.Ok(result.Value);
         })
         .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
         .WithTags("GymPlans");

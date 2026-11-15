@@ -6,8 +6,8 @@ public static class GetMembershipEndpoint
     {
         app.MapGet("/memberships/{id:int}", async (int id, GetMembershipHandler handler) =>
         {
-            var response = await handler.HandleAsync(id);
-            return Results.Ok(response);
+            var result = await handler.HandleAsync(id);
+            return Results.Ok(result);
         })
         .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
         .RequireAuthorization()
