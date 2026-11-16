@@ -1,6 +1,6 @@
 namespace GymMe.Features.GymPlans.GetPlan;
 
-public sealed record GymPlanResponse(int Id, string Name, decimal Price);
+public sealed record GymPlanResponse(int Id, string Name, decimal Price, Guid Version);
 
 public class GetPlanHandler(AppDbContext db)
 {
@@ -12,7 +12,8 @@ public class GetPlanHandler(AppDbContext db)
         .Select(x => new GymPlanResponse(
             x.Id,
             x.Name,
-            x.Price
+            x.Price,
+            x.Version
         ))
         .FirstOrDefaultAsync();
         

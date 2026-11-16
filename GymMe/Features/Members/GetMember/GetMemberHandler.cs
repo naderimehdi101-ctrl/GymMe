@@ -1,6 +1,14 @@
 namespace GymMe.Features.Members.GetMember;
 
-public sealed record MemberResponse(int Id, string Name, int Age, int GymPlanId, string GymPlanName, decimal GymPlanPrice);
+public sealed record MemberResponse
+(
+    int Id, 
+    string Name, 
+    int Age, 
+    int GymPlanId, 
+    string GymPlanName, 
+    decimal GymPlanPrice, 
+    Guid Version);
 
 public class GetMemberHandler(AppDbContext db)
 {
@@ -15,7 +23,8 @@ public class GetMemberHandler(AppDbContext db)
             x.Age,
             x.GymPlanId,
             x.GymPlan.Name,
-            x.GymPlan.Price
+            x.GymPlan.Price,
+            x.Version
     ))
     .FirstOrDefaultAsync();
 

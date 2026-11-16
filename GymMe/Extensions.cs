@@ -57,7 +57,7 @@ public static class ServiceExtensions
     }
 }
 
-public static class ResultaExtensions
+public static class ResultExtensions
 {
     public static IResult ToProblemDetails(this ResultBase result)
     {

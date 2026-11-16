@@ -32,6 +32,8 @@ public class CreateMembershipHandler(AppDbContext db)
         if (hasActiveMembership)
             return Result.Fail<MembershipResponse>("Member has already an active Membership!");
 
+        member.Version = Guid.NewGuid();
+
         var membership = new Membership
         {
             MemberId = request.MemberId,

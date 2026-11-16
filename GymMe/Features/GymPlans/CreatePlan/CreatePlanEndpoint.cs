@@ -10,7 +10,7 @@ public static class CreatePlanEndpoint
             if(result.IsFailed)
                 return result.ToProblemDetails();
                 
-            return Results.Created($"/plans/{result.Value.ID}", result.Value);
+            return Results.Created($"/plans/{result.Value.Id}", result.Value);
         })
         .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<CreatePlanRequest>>()

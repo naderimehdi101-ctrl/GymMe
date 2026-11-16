@@ -2,13 +2,13 @@ namespace GymMe.Features.GymPlans.GetAllPlans;
 
 public sealed record GymPlanResponse(int Id, string Name, decimal Price);
 
-public sealed class PagedResponse<T>
+public sealed record PagedResponse<T>
 {
     public List<T> Items { get; init; } = [];
     public int Page { get; init; }
     public int PageSize { get; init; }
     public int TotalCount { get; init; }
-}
+};
 
 public class GetAllPlansHandler(AppDbContext db)
 {

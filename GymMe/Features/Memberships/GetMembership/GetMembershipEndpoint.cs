@@ -7,6 +7,9 @@ public static class GetMembershipEndpoint
         app.MapGet("/memberships/{id:int}", async (int id, GetMembershipHandler handler) =>
         {
             var result = await handler.HandleAsync(id);
+            if(result.IsFailed)
+                return result.ToProblemDetails();
+                
             return Results.Ok(result);
         })
         .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))

@@ -10,7 +10,7 @@ public static class CreateMemberEndpoint
             if(result.IsFailed)
                 return result.ToProblemDetails();
                 
-            return Results.Created($"/members/{result.Value.ID}", result.Value);
+            return Results.Created($"/members/{result.Value.Id}", result.Value);
         })
         .RequireAuthorization("Admin")
         .AddEndpointFilter<ValidationFilter<CreateMemberRequest>>()

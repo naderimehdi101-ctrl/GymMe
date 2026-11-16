@@ -33,7 +33,7 @@ public class GetMembershipHandler(AppDbContext db)
             .FirstOrDefaultAsync();
 
         if (membership is null)
-            return Result.Fail<MembershipResponse>($"No Member found with that ID: {id}!");
+            return Result.Fail<MembershipResponse>($"No Membership found with that ID: {id}!");
 
         return Result.Ok(membership);
     }
