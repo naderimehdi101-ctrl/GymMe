@@ -53,6 +53,7 @@ GymMe (Solution)
 * **Database & ORM:** SQLite + Entity Framework Core
 * **Validation:** FluentValidation
 * **Authentication:** JWT Bearer & ASP.NET Core Identity Password Hashing
+* **Optimistic Concurrency Control:** ([ConcurrencyCheck]version tokens) 
 * **Architecture:** Vertical Slice Architecture (Feature-First)
 
 ---
