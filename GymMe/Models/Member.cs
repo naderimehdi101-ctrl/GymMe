@@ -15,6 +15,10 @@ public class Member
 
     public GymPlan GymPlan { get; set; } = null!;
     
+    public int? UserId { get; set; }
+    
+    public User? User { get; set; }
+    
     [ConcurrencyCheck]
     public Guid Version { get; set; } = Guid.NewGuid();
 }

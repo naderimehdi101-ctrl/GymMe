@@ -42,5 +42,8 @@
     <PackageReference Include="FluentResults" Version="4.0.0" />
     <Compile Remove="ValidationFilter.cs" />
     <EmbeddedResource Include="bin/Debug/GymMe.dll" />
+    <Compile Remove="ExampleClass.cs" />
+    <Compile Remove="ExampleEndpoint.cs" />
+    <Compile Remove="Features/GymPlans/Migrate&amp;DeletePlan.cs" />
   </ItemGroup>
 </Project>

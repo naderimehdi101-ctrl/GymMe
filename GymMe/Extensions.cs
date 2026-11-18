@@ -7,7 +7,7 @@ public static class EndpointExtensions
     {
 
         // Registration Endpoints
-        app.MapRegisterMemberEndpoint();
+        app.MapRegisterAndCreateMemberEndpoint();
         app.MapRegisterTrainerEndpoint();
         app.MapLoginEndpoint();
 
@@ -17,6 +17,7 @@ public static class EndpointExtensions
         app.MapGetAllPlansEndpoint();
         app.MapGetPlanEndpoint();
         app.MapUpdatePlanEndpoint();
+        app.MapMigrateAndDeletePlanEndpoint();
 
         // Member Endpoints
         app.MapCreateMemberEndpoint();
@@ -38,7 +39,7 @@ public static class ServiceExtensions
     public static WebApplicationBuilder AddApplicationServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<LoginHandler>();
-        builder.Services.AddScoped<RegisterMemberHandler>();
+        builder.Services.AddScoped<RegisterAndCreateMemberHandler>();
         builder.Services.AddScoped<RegisterTrainerHandler>();
         builder.Services.AddScoped<CreatePlanHandler>();
         builder.Services.AddScoped<DeletePlanHandler>();
@@ -52,6 +53,7 @@ public static class ServiceExtensions
         builder.Services.AddScoped<UpdateMemberHandler>();
         builder.Services.AddScoped<CreateMembershipHandler>();
         builder.Services.AddScoped<GetMembershipHandler>();
+        builder.Services.AddScoped<MigrateAndDeletePlanHandler>();
 
         return builder;
     }

@@ -94,5 +94,7 @@ GymMe (Solution)
 ## Future planwork:
 
 * xUnit Tests
+* Transactions
+
   
 
