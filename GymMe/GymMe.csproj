@@ -45,5 +45,6 @@
     <Compile Remove="ExampleClass.cs" />
     <Compile Remove="ExampleEndpoint.cs" />
     <Compile Remove="Features/GymPlans/Migrate&amp;DeletePlan.cs" />
+    <Compile Remove="CreateAdmin.cs" />
   </ItemGroup>
 </Project>

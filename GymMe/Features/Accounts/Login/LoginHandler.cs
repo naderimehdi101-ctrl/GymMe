@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GymMe.Features.Accounts.Login;
@@ -13,8 +12,8 @@ public class LoginHandler(AppDbContext db, IPasswordHasher<User> hasher, IConfig
     public async Task<Result<LoginResponse>> HandleAsync(LoginRequest request)
     {
         var email = request.Email.ToLower().Trim();
+        
         var user = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
-
         if (user is null)
             return Result.Fail<LoginResponse>("Invalid email or password");
 
@@ -24,7 +23,7 @@ public class LoginHandler(AppDbContext db, IPasswordHasher<User> hasher, IConfig
 
         var token = GenerateJWTToken(user);
 
-        return Result.Ok(new LoginResponse(user.Id, token, user.Email, user.Role));
+        return Result.Ok(new LoginResponse(user.Id, token, email , user.Role));
     }
 
     private string GenerateJWTToken(User user)

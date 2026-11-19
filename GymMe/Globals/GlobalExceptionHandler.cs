@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +16,12 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         _logger.LogError(exception, "An unhandled exception occured: {Message}", exception.Message);
         
-        var (statusCode, title ) = exception switch
+        var (statusCode, title) = exception switch
         {
             KeyNotFoundException => (StatusCodes.Status404NotFound, "Resource Not Found!"),
             ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request"),
             InvalidOperationException => (StatusCodes.Status409Conflict, "Conflict"),
+            DBConcurrencyException => (StatusCodes.Status409Conflict, "Concurrency Conflict"),
             _ => (StatusCodes.Status500InternalServerError, "Server Error")
         };
         

@@ -13,6 +13,7 @@ global using GymMe.Model;
 global using GymMe.Extensions;
 global using GymMe;
 global using Microsoft.OpenApi;
+global using Microsoft.AspNetCore.Identity;
 
 // Namespaces //
 global using GymMe.Features.Accounts.Login;
