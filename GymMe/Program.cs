@@ -53,8 +53,23 @@ app.UseExceptionHandler();
 app.UseOutputCache();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+    {
+        options.UseResponseInterceptor(@"(httpResponse) => {
+            const isSuccessfulLogin =
+                httpResponse.url.endsWith('/accounts/login') &&
+                httpResponse.status === 200;
 
+            if (isSuccessfulLogin) {
+                const loginResponseBody = JSON.parse(httpResponse.text);
+
+                if (loginResponseBody.token) {
+                    window.ui.preauthorizeApiKey('Bearer', loginResponseBody.token);
+                }
+            }
+            return httpResponse;
+        }");
+    });
 app.UseAuthentication();
 app.UseAuthorization();
 
