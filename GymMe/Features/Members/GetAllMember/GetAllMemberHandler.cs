@@ -1,27 +1,17 @@
 namespace GymMe.Features.Members.GetAllMembers;
 
-public sealed record MemberResponse(int ID, string Name, int Age, int GymPlanId, string GymPlanName, decimal GymPlanPrice);
-
-public sealed record PagedResponse<T>
-{
-    public List<T> Items { get; init; } = [];
-    public int? LastId { get; init; }
-    public int PageSize { get; init; }
-    public int TotalCount { get; init; }
-}
+public sealed record MemberResponse(int Id, string Name, int Age, int GymPlanId, string GymPlanName, decimal GymPlanPrice);
 
 public class GetAllMembersHandler(AppDbContext db)
 {
-    public async Task<Result<PagedResponse<MemberResponse>>> HandleAsync(int? lastId, int pageSize)
+    public async Task<Result<CursorPagedResponse<MemberResponse>>> HandleAsync(int? lastId, int pageSize)
     {
         pageSize = PaginationHelper.ValidatePageSize(lastId, pageSize);
-
-        var totalCount = await db.Members.CountAsync();
 
         var members = await db.Members
             .Where(x => lastId == null || x.Id > lastId)
             .OrderBy(x => x.Id)
-            .Take(pageSize)
+            .Take(pageSize + 1)
             .Select(x => new MemberResponse(
                 x.Id,
                 x.Name,
@@ -33,12 +23,10 @@ public class GetAllMembersHandler(AppDbContext db)
             .AsNoTracking()
             .ToListAsync();
 
-        return Result.Ok(new PagedResponse<MemberResponse>
-        {
-            Items = members,
-            LastId = lastId,
-            PageSize = pageSize,
-            TotalCount = totalCount
-        });
+        return Result.Ok(PaginationHelper.ToCursorResponse(
+            members, 
+            pageSize, 
+            x => x.Id
+        ));
     }
 }
