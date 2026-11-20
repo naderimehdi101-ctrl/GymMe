@@ -14,7 +14,7 @@ public sealed record MembershipResponse(
 
 public class GetMembershipHandler(AppDbContext db)
 {
-    public async Task<Result<MembershipResponse>> HandleAsync(int id)
+    public async Task<Result<MembershipResponse>> HandleAsync(int id, CancellationToken ct = default)
     {
         var membership = await db.Memberships
             .AsNoTracking()
@@ -30,7 +30,7 @@ public class GetMembershipHandler(AppDbContext db)
                 x.EndDate,
                 x.IsActive
             ))
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(ct);
 
         if (membership is null)
             return Result.Fail<MembershipResponse>($"No Membership found with that ID: {id}!");

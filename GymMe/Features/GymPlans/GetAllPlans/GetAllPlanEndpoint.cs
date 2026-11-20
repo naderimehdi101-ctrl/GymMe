@@ -4,7 +4,11 @@ public static class GetAllPlansEndpoint
 {
     public static void MapGetAllPlansEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/plans", async (GetAllPlansHandler handler, int page = 1, int pageSize = 10) =>
+        app.MapGet("/plans", async (
+            GetAllPlansHandler handler,
+            int page = 1, 
+            int pageSize = 10
+            ) =>
         {
             var result = await handler.HandleAsync(page, pageSize);
             if(result.IsFailed)

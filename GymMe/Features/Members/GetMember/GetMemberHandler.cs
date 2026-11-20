@@ -12,7 +12,7 @@ public sealed record MemberResponse
 
 public class GetMemberHandler(AppDbContext db)
 {
-    public async Task<Result<MemberResponse>> HandleAsync(int id)
+    public async Task<Result<MemberResponse>> HandleAsync(int id, CancellationToken ct = default)
     {
         var member = await db.Members
             .AsNoTracking()
@@ -26,7 +26,7 @@ public class GetMemberHandler(AppDbContext db)
             x.GymPlan.Price,
             x.Version
     ))
-    .FirstOrDefaultAsync();
+    .FirstOrDefaultAsync(ct);
 
         if (member is null)
             return Result.Fail<MemberResponse>($"No Member found with that ID: {id}!");

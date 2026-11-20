@@ -4,7 +4,7 @@ public sealed record GymPlanResponse(int Id, string Name, decimal Price, Guid Ve
 
 public class GetPlanHandler(AppDbContext db)
 {
-    public async Task<Result<GymPlanResponse>> HandleAsync(int id)
+    public async Task<Result<GymPlanResponse>> HandleAsync(int id, CancellationToken ct = default)
     {
         var gymPlan = await db.Plans
         .AsNoTracking()
@@ -15,7 +15,7 @@ public class GetPlanHandler(AppDbContext db)
             x.Price,
             x.Version
         ))
-        .FirstOrDefaultAsync();
+        .FirstOrDefaultAsync(ct);
         
         if (gymPlan is null)
             return Result.Fail<GymPlanResponse>($"No Plan found with that ID: {id}!");

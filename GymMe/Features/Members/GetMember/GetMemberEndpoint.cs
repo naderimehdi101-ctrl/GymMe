@@ -4,9 +4,9 @@ public static class GetMemberEndpoint
 {
     public static void MapGetMemberEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/members/{id:int}", async (int id, GetMemberHandler handler) =>
+        app.MapGet("/members/{id:int}", async (int id, GetMemberHandler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(id);
+            var result = await handler.HandleAsync(id, ct);
             if(result.IsFailed)
                 return result.ToProblemDetails();
                 
