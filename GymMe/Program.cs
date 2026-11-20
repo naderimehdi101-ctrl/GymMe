@@ -13,28 +13,7 @@ builder.Services.AddOutputCache();
 
 builder.AddApplicationServices();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-    };
-});
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Member", policy => policy.RequireRole("Member"));
-    options.AddPolicy("Trainer", policy => policy.RequireRole("Trainer"));
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-});
-
+builder.AddAuthenticationAndAuthorization();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -52,24 +31,8 @@ app.UseExceptionHandler();
 
 app.UseOutputCache();
 
-app.UseSwagger();
-app.UseSwaggerUI(options =>
-    {
-        options.UseResponseInterceptor(@"(httpResponse) => {
-            const isSuccessfulLogin =
-                httpResponse.url.endsWith('/accounts/login') &&
-                httpResponse.status === 200;
+app.UseSwaggerAndSwaggerUI();
 
-            if (isSuccessfulLogin) {
-                const loginResponseBody = JSON.parse(httpResponse.text);
-
-                if (loginResponseBody.token) {
-                    window.ui.preauthorizeApiKey('Bearer', loginResponseBody.token);
-                }
-            }
-            return httpResponse;
-        }");
-    });
 app.UseAuthentication();
 app.UseAuthorization();
 

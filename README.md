@@ -14,13 +14,14 @@ GymMe (Solution)
     ├── Features/
     │   ├── Accounts/
     │   │   ├── Login/
-    │   │   ├── RegisterMember/
+    │   │   ├── RegisterAndCreateMember/
     │   │   └── RegisterTrainer/
     │   ├── GymPlans/
     │   │   ├── CreatePlan/
     │   │   ├── DeletePlan/
     │   │   ├── GetAllPlans/
     │   │   ├── GetPlan/
+    │   │   ├── Migrate&DeletePlan/
     │   │   └── UpdatePlan/
     │   ├── Members/
     │   │   ├── CreateMember/
@@ -31,16 +32,20 @@ GymMe (Solution)
     │   └── Memberships/
     │       ├── CreateMembership/
     │       └── GetMembership/
+    ├── Globals/
+    │   ├── GlobalExceptionHandler.cs
+    │   ├── GlobalUsings.cs
+    │   └── GlobalValidationFilter.cs
     ├── Models/
     ├── Others/
     ├── Properties/
+    ├── appsettings.json
     ├── Extensions.cs
-    ├── GlobalExceptionHandler.cs
-    ├── GlobalUsings.cs
-    ├── Program.cs
-    ├── ValidationFilter.cs
-    ├── GymMe.slnx
-    └── README.md
+    ├── GymMe.csproj
+    └── Program.cs
+├── GymMe.slnx
+└── README.md
+
 
 ```
 
