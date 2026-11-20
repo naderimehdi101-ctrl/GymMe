@@ -1,16 +1,35 @@
-using System;
 
 namespace GymMe;
 
+public sealed record CursorPagedResponse<T>(
+    IReadOnlyList<T> Items,
+    int? NextCursor,
+    bool HasNextPage
+);
+
 public static class PaginationHelper
 {
-    public static int ValidatePageAndPagesize(int page, int pageSize)
+    public const int maxPageSize = 20;
+
+    public static int ValidatePageSize(int? lastId, int pageSize)
     {
-        if (page < 1 || pageSize < 1)
-            throw new ArgumentException("Page & Pagesize must both be atleast 1!");
-        if (pageSize > 20)
-            pageSize = 20;
-            
-        return pageSize;    
+        if (pageSize < 1 || lastId < 0)
+            throw new ArgumentException("Pagesize cant be < 1 & last ID cant be negative!");
+
+        return Math.Min(pageSize, maxPageSize);
+    }
+    public static CursorPagedResponse<T> ToCursorResponse<T>(
+        IReadOnlyList<T> items,
+        int pageSize,
+        Func<T, int> idSelector)
+    {
+        var hasNextPage = items.Count > pageSize;
+        var pageItems = hasNextPage ? [items[pageSize]] : items;
+
+        int? nextCursor = hasNextPage && pageItems.Count > 0
+        ? idSelector(pageItems[^1])
+        : null;
+
+        return new CursorPagedResponse<T>(pageItems, nextCursor, hasNextPage);
     }
 }

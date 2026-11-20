@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Identity;
-
+// P R O G R A M . C S //
 
 var builder = WebApplication.CreateBuilder(args);
 
