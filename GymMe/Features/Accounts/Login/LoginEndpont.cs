@@ -1,3 +1,6 @@
+using GymMe.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+
 namespace GymMe.Features.Accounts.Login;
 
 public static class LoginEndpoint
@@ -12,6 +15,7 @@ public static class LoginEndpoint
                 
             return Results.Ok(result.Value);
         })
+        .RequireRateLimiting(RateLimitingPolicies.AuthStrict)
         .WithTags("Registration");
     }
 }

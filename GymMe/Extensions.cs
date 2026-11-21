@@ -1,4 +1,6 @@
 
+using GymMe.RateLimiting;
+
 namespace GymMe.Extensions;
 
 //ENDPOINTS

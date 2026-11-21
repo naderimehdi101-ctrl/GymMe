@@ -1,3 +1,5 @@
+using GymMe.RateLimiting;
+
 namespace GymMe.Features.GymPlans.GetAllPlans;
 
 public static class GetAllPlansEndpoint
@@ -17,6 +19,7 @@ public static class GetAllPlansEndpoint
             return Results.Ok(result.Value);
         })
         .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
+        .RequireRateLimiting(RateLimitingPolicies.ApiStandard)
         .WithTags("GymPlans");
     }
 }

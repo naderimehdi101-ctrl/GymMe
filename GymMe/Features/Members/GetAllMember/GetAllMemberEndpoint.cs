@@ -1,3 +1,5 @@
+using GymMe.RateLimiting;
+
 namespace GymMe.Features.Members.GetAllMembers;
 
 public static class GetAllMembersEndpoint
@@ -13,6 +15,7 @@ public static class GetAllMembersEndpoint
             return Results.Ok(result.Value);
         })
         .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
+        .RequireRateLimiting(RateLimitingPolicies.ApiStandard)
         .WithTags("Members");
     }
 }

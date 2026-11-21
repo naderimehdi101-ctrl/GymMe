@@ -16,6 +16,7 @@ global using Microsoft.OpenApi;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
+global using Microsoft.Extensions.DependencyInjection;
 
 // Namespaces //
 global using GymMe.Features.Accounts.Login;
