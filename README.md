@@ -11,6 +11,13 @@ GymMe (Solution)
 └── GymMe (Project)
     ├── Data/
     │   └── AppDbContext.cs
+    ├── Extensions/
+    │   ├── AuthenticationExtension.cs
+    │   ├── AuthorizationExtension.cs
+    │   ├── DIServiceExtensions.cs
+    │   ├── EndpointExtensions.cs
+    │   ├── RateLimitingExtensions.cs
+    │   └── SwaggerExtensions.cs
     ├── Features/
     │   ├── Accounts/
     │   │   ├── Login/
@@ -36,15 +43,25 @@ GymMe (Solution)
     │   ├── GlobalExceptionHandler.cs
     │   ├── GlobalUsings.cs
     │   └── GlobalValidationFilter.cs
+    ├── Helper/
+    │   ├── FluentResults.cs
+    │   └── Pagination.cs
     ├── Models/
+    │   ├── GymPlan.cs
+    │   ├── Member.cs
+    │   ├── Membership.cs
+    │   ├── Role.cs
+    │   └── User.cs
     ├── Others/
+    │   └── launchSettings.json
     ├── Properties/
+    │   └── launchSettings.json
     ├── appsettings.json
-    ├── Extensions.cs
     ├── GymMe.csproj
     └── Program.cs
 ├── GymMe.slnx
 └── README.md
+
 
 
 ```
