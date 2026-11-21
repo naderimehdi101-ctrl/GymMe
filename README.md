@@ -70,13 +70,19 @@ GymMe (Solution)
 
 ## 🚀 Tech Stack
 
+## 🚀 Tech Stack
+
 * **Framework:** .NET (Minimal APIs)
-* **API Documentation:** Swagger/OpenAPI(Swashbuckle)
-* **Database & ORM:** SQLite + Entity Framework Core
-* **Validation:** FluentValidation
-* **Authentication:** JWT Bearer & ASP.NET Core Identity Password Hashing
-* **Optimistic Concurrency Control:** ([ConcurrencyCheck]version tokens) 
+* **API Documentation:** Swagger / OpenAPI (Swashbuckle) with JWT Bearer UI Auto-Authorization
+* **Database & ORM:** SQLite + Entity Framework Core (with `ExecuteUpdateAsync` & Explicit Transactions)
+* **Validation:** FluentValidation + Custom `IEndpointFilter` (`ValidationFilter<T>`)
+* **Error Handling & Result Pattern:** FluentResults + Centralized `IExceptionHandler` (`ProblemDetails`)
+* **Authentication & Authorization:** JWT Bearer Authentication, Role-Based Authorization Policies (`Admin`, `Trainer`, `Member`), & ASP.NET Core Identity Password Hashing
+* **Caching & Rate Limiting:** ASP.NET Core Output Caching (`CacheOutput`) & Built-in Rate Limiter Middleware (`FixedWindow` & `SlidingWindow` policies partitioned by User ID / IP)
+* **Pagination:** Custom Keyset / Cursor-Based Pagination (`ToCursorPageAsync`)
+* **Optimistic Concurrency Control:** `[ConcurrencyCheck]` Version Tokens
 * **Architecture:** Vertical Slice Architecture (Feature-First)
+
 
 ---
 
