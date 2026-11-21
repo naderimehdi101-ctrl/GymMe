@@ -7,6 +7,7 @@ A modern backend API for gym management built with **.NET Core Minimal APIs**, *
 ## 📂 Project Directory Structure
 
 ```text
+
 GymMe (Solution)
 └── GymMe (Project)
     ├── Data/
@@ -68,7 +69,6 @@ GymMe (Solution)
 
 ---
 
-## 🚀 Tech Stack
 
 ## 🚀 Tech Stack
 
@@ -88,10 +88,13 @@ GymMe (Solution)
 
 ## ✨ Core Features
 
-* **Authentication & Authorization:** Secure member and trainer registration, login, and JWT token issuance.
-* **Gym Plans:** Full CRUD operations for membership plans with safety rules preventing deletion of active plans.
-* **Member Management:** Complete member operations with integrated age and naming validation.
-* **Memberships:** Tracking for active membership statuses and durations.
+
+* **Authentication & Authorization:** Secure member and trainer registration, atomic member-plus-account onboarding (`RegisterAndCreateMember`), login, and JWT token issuance with role-based access control (`Admin`, `Trainer`, `Member`).
+* **Gym Plans:** Full CRUD operations for membership plans with safety rules preventing deletion of active plans and transactional bulk plan migration (`Migrate&DeletePlan`).
+* **Member Management:** Complete member operations with integrated age and naming validation, cursor-based pagination, and optimistic concurrency control.
+* **Memberships:** Creation and tracking for active membership statuses and durations (`1`, `3`, `6`, or `12` months) while preventing overlapping active memberships.
+* **Rate Limiting & Performance:** Configurable endpoint rate limiting (`AuthStrictPolicy` fixed window for login, `ApiStandardPolicy` sliding window for read endpoints) partitioned by User ID or IP, alongside 30-second output caching on read endpoints.
+* **Resilience & Error Handling:** Centralized exception handling returning standardized RFC `ProblemDetails` responses and `FluentValidation` endpoint filters.
 
 ---
 
