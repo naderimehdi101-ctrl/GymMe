@@ -1,9 +1,9 @@
 
 namespace GymMe.Extensions;
 
-public static class AuthenticationAndAuthorization
+public static class AuthenticationExtension
 {
-    public static WebApplicationBuilder AddAuthenticationAndAuthorization(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddAuthentication(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
@@ -20,13 +20,7 @@ public static class AuthenticationAndAuthorization
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
             };
         });
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("Member", policy => policy.RequireRole("Member"));
-            options.AddPolicy("Trainer", policy => policy.RequireRole("Trainer"));
-            options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-        });
-
+        
         return builder;
     }
 }

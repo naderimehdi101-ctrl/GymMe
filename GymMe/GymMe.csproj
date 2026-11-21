@@ -47,5 +47,6 @@
     <Compile Remove="Features/GymPlans/Migrate&amp;DeletePlan.cs" />
     <Compile Remove="CreateAdmin.cs" />
     <Compile Remove="Models/PaginationHelper.cs" />
+    <Compile Remove="Extensions/AuthenticationAndAuthorizationExtensions.cs" />
   </ItemGroup>
 </Project>

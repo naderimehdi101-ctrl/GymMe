@@ -13,7 +13,8 @@ builder.Services.AddGymMeRateLimiting(builder.Configuration);
 
 builder.AddApplicationServices();
 
-builder.AddAuthenticationAndAuthorization();
+builder.AddAuthentication();
+builder.AddAuthorization();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
