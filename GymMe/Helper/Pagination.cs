@@ -1,4 +1,4 @@
-namespace GymMe;
+namespace GymMe.Helpers;
 
 public sealed record CursorPagedResponse<T>(
     IReadOnlyList<T> Items,
