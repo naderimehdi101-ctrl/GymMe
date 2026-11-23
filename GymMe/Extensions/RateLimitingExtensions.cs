@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
@@ -41,7 +42,9 @@ internal static class RateLimitPartitionKey
 {
     public static string ForUserOrIp(HttpContext httpContext)
     {
-        var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId =
+            httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+            httpContext.User.FindFirstValue(JwtRegisteredClaimNames.Sub);
         if (!string.IsNullOrWhiteSpace(userId))
             return $"user ID: {userId}";
 

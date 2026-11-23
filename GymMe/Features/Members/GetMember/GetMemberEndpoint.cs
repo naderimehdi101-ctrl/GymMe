@@ -4,7 +4,12 @@ public static class GetMemberEndpoint
 {
     public static void MapGetMemberEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/members/{id:int}", async (int id, GetMemberHandler handler, CancellationToken ct) =>
+        app.MapGet("/members/{id:int}", async
+        (
+            int id, 
+            GetMemberHandler handler, 
+            CancellationToken ct
+            ) =>
         {
             var result = await handler.HandleAsync(id, ct);
             if(result.IsFailed)
@@ -12,7 +17,8 @@ public static class GetMemberEndpoint
                 
             return Results.Ok(result.Value);
         })
-        .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
+        .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)).Tag(CacheTags.Members))
+        .RequireRateLimiting(RateLimitingPolicies.ApiStandard)
         .WithTags("Members");
     }
 }

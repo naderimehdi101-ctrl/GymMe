@@ -15,7 +15,7 @@ public class GetAllPlansHandler(AppDbContext db)
             .OrderBy(x => x.Id)
             .Select(x => new GymPlanResponse(x.Id, x.Name, x.Price))
             .ToCursorPageAsync(lastId, pageSize, x => x.Id, ct);
-
+            
         return Result.Ok(pagedPlans);
     }
 }

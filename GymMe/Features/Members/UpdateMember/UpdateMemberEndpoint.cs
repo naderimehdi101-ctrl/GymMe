@@ -4,11 +4,20 @@ public static class UpdateMemberEndpoint
 {
     public static void MapUpdateMemberEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPut("/members/{id:int}", async (int id, UpdateMemberRequest request, UpdateMemberHandler handler) =>
+        app.MapPut("/members/{id:int}", async 
+        (
+            int id, 
+            UpdateMemberRequest request, 
+            UpdateMemberHandler handler,
+            IOutputCacheStore cache,
+            CancellationToken ct 
+            ) =>
         {
             var result = await handler.HandleAsync(id, request);
             if(result.IsFailed)
                 return result.ToProblemDetails();
+                
+            await cache.EvictByTagsAsync(ct, CacheTags.Members, CacheTags.Memberships);
                 
             return Results.Ok(new { Message = "Member successfully updated!" });
         })

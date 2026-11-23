@@ -38,6 +38,4 @@ public static class PaginationHelper
             hasNextPage
         );   
     }
-
-
 }

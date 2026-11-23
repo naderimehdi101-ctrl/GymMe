@@ -16,6 +16,7 @@ public static class LoginEndpoint
             return Results.Ok(result.Value);
         })
         .RequireRateLimiting(RateLimitingPolicies.AuthStrict)
+        .AddEndpointFilter<ValidationFilter<LoginRequest>>()
         .WithTags("Registration");
     }
 }

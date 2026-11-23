@@ -3,7 +3,7 @@ namespace GymMe.Extensions;
 
 public static class EndpointExtensions
 {
-    public static IEndpointRouteBuilder MapApplicationEndpoints(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapAppEndpoints(this IEndpointRouteBuilder app)
     {
 
         // Registration Endpoints

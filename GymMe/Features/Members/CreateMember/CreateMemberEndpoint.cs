@@ -4,11 +4,19 @@ public static class CreateMemberEndpoint
 {
     public static void MapCreateMemberEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/members", async (CreateMemberRequest request, CreateMemberHandler handler) =>
+        app.MapPost("/members", async 
+        (
+            CreateMemberRequest request, 
+            CreateMemberHandler handler,
+            IOutputCacheStore cache,
+            CancellationToken ct 
+            ) =>
         {
             var result = await handler.HandleAsync(request);
             if(result.IsFailed)
                 return result.ToProblemDetails();
+                
+            await cache.EvictByTagAsync(CacheTags.Members, ct);    
                 
             return Results.Created($"/members/{result.Value.Id}", result.Value);
         })

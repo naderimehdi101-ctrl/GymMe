@@ -6,15 +6,21 @@ public static class GetAllMembersEndpoint
 {
     public static void MapGetAllMembersEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/members", async (GetAllMembersHandler handler, int page = 1, int pageSize = 10) =>
+        app.MapGet("/members", async 
+        (
+            GetAllMembersHandler handler,
+            CancellationToken ct, 
+            int? lastId = null, 
+            int pageSize = 20
+            ) =>
         {
-            var result = await handler.HandleAsync(page, pageSize);
+            var result = await handler.HandleAsync(lastId, pageSize, ct);
             if(result.IsFailed)
                 return result.ToProblemDetails();
                 
             return Results.Ok(result.Value);
         })
-        .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)))
+        .CacheOutput(x => x.Expire(TimeSpan.FromSeconds(30)).Tag(CacheTags.Members))
         .RequireRateLimiting(RateLimitingPolicies.ApiStandard)
         .WithTags("Members");
     }

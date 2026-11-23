@@ -21,7 +21,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             KeyNotFoundException => (StatusCodes.Status404NotFound, "Resource Not Found!"),
             ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request"),
             InvalidOperationException => (StatusCodes.Status409Conflict, "Conflict"),
-            DBConcurrencyException => (StatusCodes.Status409Conflict, "Concurrency Conflict"),
+            DbUpdateConcurrencyException => (StatusCodes.Status409Conflict, "Concurrency Conflict"),
             _ => (StatusCodes.Status500InternalServerError, "Server Error")
         };
         
