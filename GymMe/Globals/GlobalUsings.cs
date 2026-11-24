@@ -20,6 +20,13 @@ global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.Extensions.DependencyInjection;
+global using System.ComponentModel.DataAnnotations;
+global using System.Net;
+global using System.Security.Claims;
+global using System.Threading.RateLimiting;
+global using Microsoft.Extensions.Options;
+global using Microsoft.IdentityModel.JsonWebTokens;
+
 
 // Namespaces //
 global using GymMe.Features.Accounts.Login;

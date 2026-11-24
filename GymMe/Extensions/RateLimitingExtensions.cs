@@ -1,22 +1,30 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Threading.RateLimiting;
-using Microsoft.Extensions.Options;
+
+using RequiredAttribute = 
+System.ComponentModel.DataAnnotations.RequiredAttribute;
 
 namespace GymMe.RateLimiting;
 
 public sealed class PolicySettings
 {
+    [Range(1, int.MaxValue,
+    ErrorMessage = "Permit limit must be atleast 1!")]
     public int PermitLimit { get; init; }
+    
+    [Range(1, int.MaxValue,
+    ErrorMessage = "Window seconds must be atleast 1 sec!")]
     public int WindowSecond { get; init; }
+    
+    [Range(0, int.MaxValue,
+    ErrorMessage = "Queuelimit cannot be negative!")]
     public int QueueLimit { get; init; }
 }
 
 public sealed class RateLimitOptions
 {
     public const string SectionName = "RateLimiting";
-
+    
+    [Required]
+    [ValidateObjectMembers]
     public PolicySettings AuthStrict { get; init; } = new()
     {
         PermitLimit = 10,
@@ -24,6 +32,8 @@ public sealed class RateLimitOptions
         QueueLimit = 0
     };
 
+    [Required]
+    [ValidateObjectMembers]
     public PolicySettings ApiStandard { get; init; } = new()
     {
         PermitLimit = 120,
@@ -58,9 +68,9 @@ public static class RateLimitingExtension
 {
     public static IServiceCollection AddGymMeRateLimiting(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<RateLimitOptions>(
-            configuration.GetSection(RateLimitOptions.SectionName)
-        );
+        services.AddOptionsWithValidateOnStart<RateLimitOptions>()
+        .BindConfiguration(RateLimitOptions.SectionName)
+        .ValidateDataAnnotations();
 
         services.AddRateLimiter(options =>
         {
