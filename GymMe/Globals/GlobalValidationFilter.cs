@@ -1,4 +1,4 @@
-namespace GymMe;
+namespace GymMe.GlobalValidator;
 
 public sealed class ValidationFilter<TRequest>(IValidator<TRequest> validator) : IEndpointFilter
 {

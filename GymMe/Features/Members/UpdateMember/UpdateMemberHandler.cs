@@ -4,7 +4,10 @@ public sealed record UpdateMemberRequest(string Name, int Age, int GymPlanId, Gu
 
 public class UpdateMemberHandler(AppDbContext db)
 {
-    public async Task<Result> HandleAsync(int id, UpdateMemberRequest request)
+    public async Task<Result> HandleAsync(
+        int id, 
+        UpdateMemberRequest request,
+        CancellationToken ct)
     {
         var foundMember = await db.Members.FindAsync(id);
         if (foundMember is null)
@@ -21,7 +24,7 @@ public class UpdateMemberHandler(AppDbContext db)
         foundMember.GymPlanId = request.GymPlanId;
         foundMember.Version = Guid.NewGuid();
 
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
         
         return Result.Ok();
     }

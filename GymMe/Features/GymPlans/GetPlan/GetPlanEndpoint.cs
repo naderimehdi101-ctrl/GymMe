@@ -8,7 +8,6 @@ public static class GetPlanEndpoint
         (
             int id,
             GetPlanHandler handler,
-            IOutputCacheStore cache,
             CancellationToken ct
             ) =>
         {

@@ -2,7 +2,9 @@ namespace GymMe.Features.Members.DeleteMember;
 
 public class DeleteMemberHandler(AppDbContext db)
 {
-    public async Task<Result> HandleAsync(int id)
+    public async Task<Result> HandleAsync(
+        int id,
+        CancellationToken ct)
     {
         var foundMember = await db.Members.FindAsync(id);
         if (foundMember is null)
@@ -13,7 +15,7 @@ public class DeleteMemberHandler(AppDbContext db)
             return Result.Fail("Member has an active membership!");
 
         db.Members.Remove(foundMember);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
         
         return Result.Ok();
     }

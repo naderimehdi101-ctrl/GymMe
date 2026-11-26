@@ -1,7 +1,7 @@
-using System;
-using System.Data;
+
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+
+namespace GymMe.GlobalExceptionHandler;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {

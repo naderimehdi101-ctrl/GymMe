@@ -12,7 +12,7 @@ public static class DeleteMemberEndpoint
             CancellationToken ct 
             ) =>
         {
-            var result = await handler.HandleAsync(id);
+            var result = await handler.HandleAsync(id, ct);
             if(result.IsFailed)
                 return result.ToProblemDetails();
                 

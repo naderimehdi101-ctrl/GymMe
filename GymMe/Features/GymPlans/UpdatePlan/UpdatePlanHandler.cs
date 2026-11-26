@@ -4,7 +4,10 @@ public sealed record UpdatePlanRequest(string Name, decimal Price, Guid Version)
 
 public class UpdatePlanHandler(AppDbContext db)
 {
-    public async Task<Result> HandleAsync(int id, UpdatePlanRequest request)
+    public async Task<Result> HandleAsync(
+        int id, 
+        UpdatePlanRequest request,
+        CancellationToken ct)
     {
         var plan = await db.Plans.FindAsync(id);
         if (plan is null)
@@ -18,7 +21,7 @@ public class UpdatePlanHandler(AppDbContext db)
         plan.Price = request.Price;
         plan.Version = Guid.NewGuid();
 
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
         return Result.Ok();
     }
 }

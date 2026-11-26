@@ -5,13 +5,10 @@ public static class EndpointExtensions
 {
     public static IEndpointRouteBuilder MapAppEndpoints(this IEndpointRouteBuilder app)
     {
-
-        // Registration Endpoints
         app.MapRegisterAndCreateMemberEndpoint();
         app.MapRegisterTrainerEndpoint();
         app.MapLoginEndpoint();
 
-        // Gym Plan Endpoints
         app.MapCreatePlanEndpoint();
         app.MapDeletePlanEndpoint();
         app.MapGetAllPlansEndpoint();
@@ -19,14 +16,12 @@ public static class EndpointExtensions
         app.MapUpdatePlanEndpoint();
         app.MapMigrateAndDeletePlanEndpoint();
 
-        // Member Endpoints
         app.MapCreateMemberEndpoint();
         app.MapDeleteMemberEndpoint();
         app.MapGetAllMembersEndpoint();
         app.MapGetMemberEndpoint();
         app.MapUpdateMemberEndpoint();
 
-        // Membership Endpoints
         app.MapCreateMembershipEndpoint();
         app.MapGetMembershipEndpoint();
 

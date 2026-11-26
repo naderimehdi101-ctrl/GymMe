@@ -2,7 +2,9 @@ namespace GymMe.Features.GymPlans.DeletePlan;
 
 public class DeletePlanHandler(AppDbContext db)
 {
-    public async Task<Result> HandleAsync(int id)
+    public async Task<Result> HandleAsync(
+        int id,
+        CancellationToken ct)
     {
         var deletePlan = await db.Plans.FindAsync(id);
         if (deletePlan is null)
@@ -17,7 +19,7 @@ public class DeletePlanHandler(AppDbContext db)
             return Result.Fail("The Plan is still used by Memberships");
 
         db.Plans.Remove(deletePlan);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
         
         return Result.Ok();
     }

@@ -22,6 +22,8 @@ global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.ComponentModel.DataAnnotations;
 global using System.Net;
+global using GymMe.GlobalValidator;
+global using GymMe.GlobalExceptionHandler;
 global using System.Security.Claims;
 global using System.Threading.RateLimiting;
 global using Microsoft.Extensions.Options;

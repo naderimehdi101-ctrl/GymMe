@@ -24,7 +24,7 @@ public sealed record RegisterAndCreateMemberResponse(
 
 public class RegisterAndCreateMemberHandler(AppDbContext db, IPasswordHasher<User> hasher)
 {
-    public async Task<Result<RegisterAndCreateMemberResponse>> HandleAsync(RegisterAndCreateMemberRequest request)
+    public async Task<Result<RegisterAndCreateMemberResponse>> HandleAsync(RegisterAndCreateMemberRequest request, CancellationToken ct)
     {
         var email = request.Email.ToLower().Trim();
 
@@ -49,11 +49,10 @@ public class RegisterAndCreateMemberHandler(AppDbContext db, IPasswordHasher<Use
             user.PasswordHash = hasher.HashPassword(user, request.Password);
             
             db.Users.Add(user);
-            await db.SaveChangesAsync();
+            await db.SaveChangesAsync(ct);
 
             var member = new Member
             {
-                Id = user.Id,
                 Name = request.Name,
                 Age = request.Age,
                 GymPlanId = request.GymPlanId,
@@ -61,7 +60,7 @@ public class RegisterAndCreateMemberHandler(AppDbContext db, IPasswordHasher<Use
             };
             
             db.Members.Add(member);
-            await db.SaveChangesAsync();
+            await db.SaveChangesAsync(ct);
             
             await transaction.CommitAsync();
 

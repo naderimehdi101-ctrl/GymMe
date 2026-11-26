@@ -4,16 +4,19 @@ public static class RegisterTrainerEndpoint
 {
     public static void MapRegisterTrainerEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/accounts/trainer", async (RegisterTrainerRequest request, RegisterTrainerHandler handler) =>
+        app.MapPost("/accounts/trainer", async (
+            RegisterTrainerRequest request, 
+            RegisterTrainerHandler handler,
+            CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(request);
+            var result = await handler.HandleAsync(request, ct);
             if(result.IsFailed)
                 return result.ToProblemDetails();
                 
             return Results.Created($"/accounts/trainer/{result.Value.ID}", result.Value);
         })
         .AddEndpointFilter<ValidationFilter<RegisterTrainerRequest>>()
-        .RequireAuthorization()
-        .WithTags("Registration");
+        .RequireAuthorization("Admin")
+        .WithTags("Accounts");
     }
 }

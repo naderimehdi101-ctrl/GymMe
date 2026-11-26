@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 
 namespace GymMe.Features.Accounts.RegisterTrainer;
 
@@ -7,7 +6,9 @@ public sealed record RegisterTrainerResponse(int ID, string Email, Role Role);
 
 public class RegisterTrainerHandler(AppDbContext db, IPasswordHasher<User> hasher)
 {
-    public async Task<Result<RegisterTrainerResponse>> HandleAsync(RegisterTrainerRequest request)
+    public async Task<Result<RegisterTrainerResponse>> HandleAsync(
+        RegisterTrainerRequest request, 
+        CancellationToken ct)
     {
         var email = request.Email.ToLower().Trim();
 
@@ -24,7 +25,7 @@ public class RegisterTrainerHandler(AppDbContext db, IPasswordHasher<User> hashe
         user.PasswordHash = hasher.HashPassword(user, request.Password);
 
         db.Users.Add(user);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
 
         return Result.Ok(new RegisterTrainerResponse(user.Id, user.Email, user.Role));
     }

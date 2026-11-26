@@ -48,5 +48,13 @@
     <Compile Remove="CreateAdmin.cs" />
     <Compile Remove="Models/PaginationHelper.cs" />
     <Compile Remove="Extensions/AuthenticationAndAuthorizationExtensions.cs" />
+    <Compile Remove="Extensions/DIServiceExtensions.cs" />
+    <Compile Remove="Features/Memberships/UpdateMembership/UpdateMembershipHwndler.cs" />
+    <Compile Remove="Features/Accounts/Login/LoginEndpont.cs" />
+    <Compile Remove="Features/Accounts/Login/LoginValidator.cs" />
+    <Compile Remove="Features/Accounts/RegisterTrainer/RegisterTrainerValidator.cs" />
+    <Compile Remove="Features/Accounts/RegisterAndCreateMember/RegisterMemberValidator.cs" />
+    <Compile Remove="Features/Members/CreateMember/CreateMemberValidator.cs" />
+    <Compile Remove="Features/Members/UpdateMember/UpdateMemberValidator.cs" />
   </ItemGroup>
 </Project>

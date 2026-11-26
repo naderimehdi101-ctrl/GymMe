@@ -5,7 +5,9 @@ public sealed record MemberResponse(int Id, string Name, int Age, int GymPlanId,
 
 public class CreateMemberHandler(AppDbContext db)
 {
-    public async Task<Result<MemberResponse>> HandleAsync(CreateMemberRequest request)
+    public async Task<Result<MemberResponse>> HandleAsync(
+        CreateMemberRequest request,
+        CancellationToken ct)
     {
         var plan = await db.Plans.FindAsync(request.GymPlanId);
         if (plan is null)
@@ -20,7 +22,7 @@ public class CreateMemberHandler(AppDbContext db)
         };
 
         db.Members.Add(newMember);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
 
         return Result.Ok(new MemberResponse(
             newMember.Id,

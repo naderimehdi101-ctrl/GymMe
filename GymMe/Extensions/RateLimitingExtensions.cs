@@ -131,9 +131,7 @@ public static class RateLimitingExtension
                     AutoReplenishment = true
                 });
             });
-
         });
-
         return services;
     }
 }

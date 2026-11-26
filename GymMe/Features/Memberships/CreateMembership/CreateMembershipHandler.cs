@@ -16,7 +16,9 @@ public sealed record MembershipResponse(
 
 public class CreateMembershipHandler(AppDbContext db)
 {
-    public async Task<Result<MembershipResponse>> HandleAsync(CreateMembershipRequest request)
+    public async Task<Result<MembershipResponse>> HandleAsync(
+        CreateMembershipRequest request,
+        CancellationToken ct)
     {
         var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -28,13 +30,13 @@ public class CreateMembershipHandler(AppDbContext db)
         if (plan is null)
             return Result.Fail<MembershipResponse>($"No Plan found with that ID: {request.GymPlanId}!");
 
-        var hasActiveMembership = await db.Memberships.AnyAsync(m => m.MemberId == member.Id && m.EndDate > startDate);
-        if (hasActiveMembership)
+        var hasActiveMembership = await db.Memberships.AnyAsync(m => m.MemberId == member.Id && m.EndDate >= startDate, ct);
+        if (hasActiveMembership
             return Result.Fail<MembershipResponse>("Member has already an active Membership!");
 
         member.Version = Guid.NewGuid();
 
-        var membership = new Membership
+        var membership = new Model.Membership
         {
             MemberId = request.MemberId,
             Member = member,
@@ -46,7 +48,7 @@ public class CreateMembershipHandler(AppDbContext db)
         };
 
         db.Memberships.Add(membership);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
 
         return Result.Ok(new MembershipResponse(
             membership.Id,

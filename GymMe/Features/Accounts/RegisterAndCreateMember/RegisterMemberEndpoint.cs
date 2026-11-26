@@ -14,11 +14,11 @@ public static class RegisterAndCreateMemberEndpoint
             CancellationToken ct
             ) =>
         {
-            var result = await handler.HandleAsync(request);
+            var result = await handler.HandleAsync(request, ct);
             if(result.IsFailed)
                 return result.ToProblemDetails();
                 
-            await cache.EvictByTagAsync("members", ct);    
+            await cache.EvictByTagAsync(CacheTags.Members, ct);    
                 
             return Results.Created($"/accounts/member/{result.Value.MemberId}", result.Value);
         })

@@ -11,7 +11,6 @@ public static class AuthorizationExtension
             options.AddPolicy("Trainer", policy => policy.RequireRole("Trainer"));
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
         });
-        
         return builder;
     }
 }

@@ -13,7 +13,7 @@ public static class UpdatePlanEndpoint
             CancellationToken ct 
             ) =>
         {
-            var result = await handler.HandleAsync(id, request);
+            var result = await handler.HandleAsync(id, request, ct);
             if(result.IsFailed)
                 return result.ToProblemDetails();
             
