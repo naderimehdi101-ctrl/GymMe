@@ -4,25 +4,23 @@ public static class UpdateMembershipEndpoint
 {
     public static void MapUpdateMembershipEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPut("/members/{id:int}", async 
-        (
-            int id, 
-            UpdateMemberRequest request, 
-            UpdateMemberHandler handler,
+        app.MapPut("/memberships/{id:int}", async (
+            int id,
+            UpdateMembershipRequest request,
+            UpdateMembershipHandler handler,
             IOutputCacheStore cache,
-            CancellationToken ct 
-            ) =>
+            CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(id, request);
-            if(result.IsFailed)
+            var result = await handler.HandleAsync(id, request, ct);
+            if (result.IsFailed)
                 return result.ToProblemDetails();
-                
-            await cache.EvictByTagsAsync(ct, CacheTags.Members, CacheTags.Memberships);
-                
-            return Results.Ok(new { Message = "Member successfully updated!" });
+
+            await cache.EvictByTagsAsync(ct, CacheTags.Memberships, CacheTags.Members);
+
+            return Results.Ok(new { Message = "Membership successfully updated!" });
         })
         .RequireAuthorization("Admin")
-        .AddEndpointFilter<ValidationFilter<UpdateMemberRequest>>()
-        .WithTags("Members");
+        .AddEndpointFilter<ValidationFilter<UpdateMembershipRequest>>()
+        .WithTags("Memberships");
     }
 }

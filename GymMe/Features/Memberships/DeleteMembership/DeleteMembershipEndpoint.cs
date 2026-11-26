@@ -1,4 +1,4 @@
-namespace GymMe.Features.Membership.DeleteMembership;
+namespace GymMe.Features.Memberships.DeleteMembership;
 
 public static class DeleteMembershipEndpoint
 {

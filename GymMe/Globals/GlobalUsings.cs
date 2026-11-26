@@ -45,6 +45,8 @@ global using GymMe.Features.Members.GetAllMembers;
 global using GymMe.Features.Members.GetMember;
 global using GymMe.Features.Members.UpdateMember;
 global using GymMe.Features.Memberships.CreateMembership;
+global using GymMe.Features.Memberships.DeleteMembership
 global using GymMe.Features.Memberships.GetMembership;
+global using GymMe.Features.Memberships.UpdateMembership;
 global using GymMe.Features.GymPlans.MigrateAndDeletePlan;
 global using GymMe.Features.Accounts.RegisterAndCreateMember;
