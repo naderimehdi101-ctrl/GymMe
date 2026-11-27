@@ -28,6 +28,8 @@ global using System.Security.Claims;
 global using System.Threading.RateLimiting;
 global using Microsoft.Extensions.Options;
 global using Microsoft.IdentityModel.JsonWebTokens;
+global using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
+
 
 
 // Namespaces //
@@ -45,7 +47,7 @@ global using GymMe.Features.Members.GetAllMembers;
 global using GymMe.Features.Members.GetMember;
 global using GymMe.Features.Members.UpdateMember;
 global using GymMe.Features.Memberships.CreateMembership;
-global using GymMe.Features.Memberships.DeleteMembership
+global using GymMe.Features.Memberships.DeleteMembership;
 global using GymMe.Features.Memberships.GetMembership;
 global using GymMe.Features.Memberships.UpdateMembership;
 global using GymMe.Features.GymPlans.MigrateAndDeletePlan;

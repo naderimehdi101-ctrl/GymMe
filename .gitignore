@@ -3,9 +3,26 @@
 *.user
 *.suo
 
-# Build output
-**/bin/
-**/obj/
-
 # Test results
 TestResults/
+
+# Build outputs
+bin/
+obj/
+
+# Local SQLite databases & C# Shell IDE cache
+*.db
+*.db-shm
+*.db-wal
+.GymMe.csharpshellideproj.db
+
+# IDE & OS folders
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+

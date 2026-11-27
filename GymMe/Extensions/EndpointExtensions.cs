@@ -1,4 +1,6 @@
 
+using GymMe.Features.MyProfile.GetMyProfile;
+
 namespace GymMe.Extensions;
 
 public static class EndpointExtensions
@@ -23,7 +25,11 @@ public static class EndpointExtensions
         app.MapUpdateMemberEndpoint();
 
         app.MapCreateMembershipEndpoint();
+        app.MapDeleteMembershipEndpoint();
         app.MapGetMembershipEndpoint();
+        app.MapUpdateMembershipEndpoint();
+        
+        app.MapGetMyProfileEndpoint();
 
         return app;
     }

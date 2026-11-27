@@ -31,7 +31,7 @@ public class CreateMembershipHandler(AppDbContext db)
             return Result.Fail<MembershipResponse>($"No Plan found with that ID: {request.GymPlanId}!");
 
         var hasActiveMembership = await db.Memberships.AnyAsync(m => m.MemberId == member.Id && m.EndDate >= startDate, ct);
-        if (hasActiveMembership
+        if (hasActiveMembership)
             return Result.Fail<MembershipResponse>("Member has already an active Membership!");
 
         member.Version = Guid.NewGuid();
